@@ -16,12 +16,12 @@ import javax.swing.JTabbedPane;
 
 public class GUI {
 
-
 	public static void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
 		panel.validate();
 	}
-	
+
+
 	protected static JComponent makeTextPanel(String text){
 		JPanel panel = new JPanel(false);
 		JLabel filler = new JLabel(text);
@@ -38,44 +38,22 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel1 = new JPanel();
 		panel1.setLayout( null );
-		JLabel label1 = new JLabel( "haha");
-		label1.setBounds( 10, 15, 150, 20 );
-		panel1.add( label1 );
+	
 		JTabbedPane pane = new JTabbedPane();
-		pane.setPreferredSize(new Dimension(200,200));
-		pane.addTab( "Page 1", panel1);
-		frame.getContentPane().add(pane, BorderLayout.SOUTH);
-		
+	
 
 
 		// Create the three buttons, download, extract and history(log)
-		JButton download = new JButton("DOWNLOAD");
-		JButton extract = new JButton("EXTRACT");
-		JButton history = new JButton("Playback");
-		
-		JPanel lightGreenPanel = new JPanel();
-		lightGreenPanel.setOpaque(true);
-		lightGreenPanel.setBackground(new Color(141,178,92));
-		lightGreenPanel.setPreferredSize(new Dimension(200, 40));
 
-		JPanel darkBluePanel = new JPanel();
-		darkBluePanel.setOpaque(true);
-		darkBluePanel.setBackground(new Color(66,107,122));
-		darkBluePanel.setPreferredSize(new Dimension(200, 40));
+		Download dl = new Download();
+		dl.insertGUIFeatures(frame,panel1,pane);
 
-		JPanel swampGreenPanel = new JPanel();
-		swampGreenPanel.setOpaque(true);
-		swampGreenPanel.setBackground(new Color(73,142,99));
-		swampGreenPanel.setPreferredSize(new Dimension(200, 40));
-		
-		addButtonToPane(lightGreenPanel,download);
-		addButtonToPane(darkBluePanel,extract);
-		addButtonToPane(swampGreenPanel,history);
-		
-		frame.getContentPane().add(swampGreenPanel, BorderLayout.WEST);
-		frame.getContentPane().add(lightGreenPanel, BorderLayout.CENTER);
-		frame.getContentPane().add(darkBluePanel, BorderLayout.EAST);
-		
+		Editing edit = new Editing();
+		edit.addGUIComponents(frame,panel1,pane);
+
+		Playback pb = new Playback();
+		pb.insertGUIFeatures(frame, panel1,pane);
+
 		frame.pack();
 		frame.setVisible(true);
 	}
