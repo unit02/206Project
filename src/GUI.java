@@ -38,25 +38,21 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel1 = new JPanel();
 		panel1.setLayout( null );
-		JLabel label1 = new JLabel( "haha");
-		label1.setBounds( 10, 15, 150, 20 );
-		panel1.add( label1 );
-//		JTabbedPane pane = new JTabbedPane();
-//		pane.setPreferredSize(new Dimension(200,200));
-//		pane.addTab( "Pageee 1", panel1);
-//		frame.getContentPane().add(pane, BorderLayout.SOUTH);
+	
+		JTabbedPane pane = new JTabbedPane();
+	
 
 
 		// Create the three buttons, download, extract and history(log)
 
 		Download dl = new Download();
-		dl.insertGUIFeatures(frame);
+		dl.insertGUIFeatures(frame,panel1,pane);
 
 		Editing edit = new Editing();
-		edit.addGUIComponents(frame,panel1);
+		edit.addGUIComponents(frame,panel1,pane);
 
 		Playback pb = new Playback();
-		pb.insertGUIFeatures(frame);
+		pb.insertGUIFeatures(frame, panel1,pane);
 
 		frame.pack();
 		frame.setVisible(true);

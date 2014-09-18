@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -8,10 +9,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -27,35 +32,8 @@ public class Playback {
 		panel.validate();
 	}
 
-	private void onClick(JButton jbPlay, final JFrame frame){
 
-
-		jbPlay.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JPanel panel = new JPanel();
-				JTabbedPane pane = new JTabbedPane();
-				pane.setPreferredSize(new Dimension(200,200));
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);
-				System.out.print("HEL");
-
-			}
-
-
-		});
-
-
-		jbPlay.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-	}
-
-	public void insertGUIFeatures(final JFrame frame){	
+	public void insertGUIFeatures(final JFrame frame, final JPanel panel1, final JTabbedPane pane){	
 		//add button to top
 		JButton jbPlay = new JButton("Playback");
 		JPanel swampGreenPanel = new JPanel();
@@ -65,22 +43,41 @@ public class Playback {
 		addButtonToPane(swampGreenPanel,jbPlay);
 		frame.getContentPane().add(swampGreenPanel, BorderLayout.WEST);
 
-
-
-		//pane.setVisible(false);
-		//onClick(jbPlay, frame);
-
-
 		jbPlay.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+
+				pane.removeAll();
 				JPanel panel = new JPanel();
-				final JTabbedPane pane = new JTabbedPane();
+				
+				pane.add(panel);
+				SpringLayout layout = new SpringLayout();
+				panel.setLayout(layout);
+				
+				//add text field to show which file chosen
+				 JTextField text = new JTextField();
+				panel.add(text);
+				//move the text box to its location
+				layout.putConstraint(SpringLayout.WEST, text, 15, SpringLayout.WEST, pane);
+				layout.putConstraint(SpringLayout.NORTH, text, 25, SpringLayout.NORTH, pane);
+
+				//add file chooser
+				 setFileChoice(panel,text);
+			
+				text.setPreferredSize(new Dimension(200,25));
+				//add begin button
+				JButton jBegin = new JButton("Begin");
+				panel.add(jBegin);
+
+			
+				////move the begin button to its location
+				layout.putConstraint(SpringLayout.WEST, jBegin, 15, SpringLayout.WEST, pane);
+				layout.putConstraint(SpringLayout.NORTH, jBegin, 25, SpringLayout.NORTH, text);
+				
 				pane.setPreferredSize(new Dimension(200,200));
-				pane.addTab( "Pagehhh 1", panel);
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);
+				frame.getContentPane().add(pane, BorderLayout.SOUTH);			
 				frame.pack();
 				frame.repaint();
 				frame.validate();
@@ -88,6 +85,29 @@ public class Playback {
 
 
 		});
+	}
+
+	private void setFileChoice(JPanel panel,final JTextField text){
+		JButton jbChoose = new JButton("Choose File");
+		JFileChooser jfile = null;
+		jbChoose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Opens JFileChooser when button pressed
+				JFileChooser jfile = new JFileChooser();
+
+				int response = jfile.showOpenDialog(null);
+				if (response == JFileChooser.APPROVE_OPTION) {
+					String chosenFile = jfile.getSelectedFile().toString();
+					//inputMedia.playMedia(chosenfile);
+					text.setText(chosenFile);
+				}
+
+				jfile.setVisible(true);
+			}
+		});
+	
+		panel.add(jbChoose);
+		
 	}
 
 

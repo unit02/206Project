@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,23 +17,59 @@ public class Editing {
 		panel.validate();
 	}
 	
-	public void addGUIComponents(JFrame frame,JPanel panel1){
+	public void addGUIComponents(final JFrame frame,final JPanel panel1, final JTabbedPane pane){
 		
-	
 		
-	JButton jEdit = new JButton("Editing");
+	JButton jbEdit = new JButton("Editing");
 	JPanel lightGreenPanel = new JPanel();
 	lightGreenPanel.setOpaque(true);
 	lightGreenPanel.setBackground(new Color(141,178,92));
 	lightGreenPanel.setPreferredSize(new Dimension(200, 40));
-	addButtonToPane(lightGreenPanel,jEdit);
+	addButtonToPane(lightGreenPanel,jbEdit);
 	frame.getContentPane().add(lightGreenPanel, BorderLayout.CENTER);
-	//addTabs(frame, panel1 );		
+
+
+	jbEdit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().remove(panel1);
+				
+				JPanel removePanel = new JPanel();
+				JPanel replacePanel = new JPanel();
+				JPanel overlayPanel = new JPanel();
+				JPanel titlePanel = new JPanel();
+				JPanel creditsPanel = new JPanel();
+				
+				pane.removeAll();
+				pane.setPreferredSize(new Dimension(200,200));
+				pane.addTab( "Remove Audio", removePanel);
+				pane.addTab( "Replace Audio", replacePanel);
+				pane.addTab( "Overlay Audio", overlayPanel);
+				pane.addTab( "Add Title", titlePanel);
+				pane.addTab( "Add Credits", creditsPanel);
+				frame.getContentPane().add(pane, BorderLayout.SOUTH);
+				
+				
+				frame.pack();
+				frame.repaint();
+				frame.validate();
+			
+			}
+
+
+		});
+	
 	}
 	
-	public void addTabs(JFrame frame, JPanel panel1){
-		JTabbedPane pane = new JTabbedPane();
-		pane.addTab( "Editing", panel1);
-		frame.getContentPane().add(pane, BorderLayout.SOUTH);
-	}
+	  public void addTab(JTabbedPane tabbedPane, String label) {
+		    JButton button = new JButton(label);
+		    tabbedPane.addTab(label, button);
+		  }
+	  
+//	public void addTabs(JFrame frame, JPanel panel1){
+//		JTabbedPane pane = new JTabbedPane();
+//		pane.addTab( "Editing", panel1);
+//		frame.getContentPane().add(pane, BorderLayout.SOUTH);
+//	}
 }
