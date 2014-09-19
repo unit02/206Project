@@ -1,3 +1,5 @@
+
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,10 +10,13 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
@@ -31,6 +36,8 @@ public class Playback {
 	private JButton jbFast;
 	private JButton jbBack;
 	private JButton jbMute;
+
+	private JSlider volumeControl;
 
 	boolean isFastForwarding = false;
 	boolean isBackwards = false;
@@ -161,6 +168,7 @@ public class Playback {
 		mediaFrame.setLocation(100, 100);
 		mediaFrame.setSize(1050, 600);
 		mediaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		mediaFrame.setVisible(true);
 
 		//set up layout and add tool panel
@@ -171,7 +179,7 @@ public class Playback {
 		addPlayButton();
 		addFFButton();
 		addMuteButton();
-
+		addVolumeControl();
 		BorderLayout lay = new BorderLayout();		
 		mediaPlayerComponent.setLayout(lay);
 		mediaPlayerComponent.add(toolPanel,BorderLayout.SOUTH);	
@@ -299,4 +307,20 @@ public class Playback {
 		});
 		toolPanel.add(jbMute);
 	}
+	private void addVolumeControl(){
+
+		volumeControl = new JSlider(JSlider.HORIZONTAL,0,100,100);
+		volumeControl.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int volumeLevel = volumeControl.getValue();
+				mediaPlayerComponent.getMediaPlayer().setVolume(volumeLevel);
+
+			}
+		});
+		toolPanel.add(volumeControl);
+
+	}
 }
+
+
+

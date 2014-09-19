@@ -5,12 +5,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 
 
 public class Download {
+	private Process process;
+	boolean isCanceled = false;
+	boolean wgetFinished = false;
+	JButton jbCancel = new JButton("Cancel");
+	JCheckBox trueCheck = new JCheckBox("Open Source", false);
+	JTextField urlInput = new JTextField("",15);
+	JTextField jtextInput = new JTextField("Input URL :");
+	JTextField userInfo = new JTextField("");
+	JProgressBar pb = new JProgressBar();
+	int prog = 0;
+
+	
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
 		panel.validate();
