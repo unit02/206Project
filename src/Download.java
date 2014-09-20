@@ -32,7 +32,8 @@ public class Download extends JPanel{
 	private	JCheckBox trueCheck ;
 	private	JTextField urlInput ;
 	private	JTextField jtextInput;
-	private	JTextField userInfo = new JTextField("");
+
+	private	JTextField userInfo ;
 	private JProgressBar pb = new JProgressBar();
 	int prog = 0;
 	private JPanel panel;
@@ -72,6 +73,13 @@ public class Download extends JPanel{
 		lay.putConstraint(SpringLayout.WEST, trueCheck, 15, SpringLayout.WEST, panel1);
 		lay.putConstraint(SpringLayout.NORTH, trueCheck, 25, SpringLayout.NORTH, jtextInput);
 
+		userInfo = new JTextField("",50);
+		userInfo.setEditable(false);
+		panel1.add(userInfo);
+		//set the location of the open source check box
+		lay.putConstraint(SpringLayout.WEST, userInfo, 15, SpringLayout.WEST, panel1);
+		lay.putConstraint(SpringLayout.NORTH, userInfo, 25, SpringLayout.NORTH, trueCheck);
+
 
 
 	}
@@ -91,16 +99,20 @@ public class Download extends JPanel{
 		jbDownload = new JButton("Download");
 		jbDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+
 				if(!trueCheck.isSelected()){
 					userInfo.setText("Please only download open source!");
 					return;
 				}
 				String outputName = null;
 				String input = urlInput.getText();
-				if (input.length() == 0){
+				System.out.print(input);
+				if(input.length() == 0){
 					userInfo.setText("Please enter a URL");
 					return;
+				}
+				if (input.length() == 0){
+
 				}
 				else {
 					//to get the filename from the url a process is used
@@ -172,12 +184,13 @@ public class Download extends JPanel{
 		panel1.add(jbDownload);
 		//set the location of the download button
 		lay.putConstraint(SpringLayout.WEST, jbDownload, 15, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, jbDownload, 25, SpringLayout.NORTH, trueCheck);
+		lay.putConstraint(SpringLayout.NORTH, jbDownload, 25, SpringLayout.NORTH, userInfo);
 
 	}
-	
+
 	private void createCancelButton(final JPanel panel1){
 		jbCancel = new JButton("Cancel");
+		jbCancel.setVisible(false);
 		//if cancel is pressed, then the download halts
 		jbCancel.addActionListener(new ActionListener(){
 
@@ -191,8 +204,8 @@ public class Download extends JPanel{
 		});
 		panel1.add(jbCancel);
 		//set the location of the download button
-		lay.putConstraint(SpringLayout.WEST, jbCancel, 15, SpringLayout.WEST, jbDownload);
-		lay.putConstraint(SpringLayout.NORTH, jbCancel, 25, SpringLayout.NORTH, trueCheck);
+		lay.putConstraint(SpringLayout.WEST, jbCancel, 25, SpringLayout.WEST, panel1);
+		lay.putConstraint(SpringLayout.NORTH, jbCancel, 25, SpringLayout.NORTH, userInfo);
 
 	}
 
@@ -232,27 +245,28 @@ public class Download extends JPanel{
 
 		});
 	}
-	
+
 	private class DownloadSwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
 
 
 			if (isCanceled) {
-
+				jbDownload.setVisible(true);
 				userInfo.setText("Download was cancelled");
-
 				pb.setVisible(false);
 				pb.setBackground(null);
 				jbCancel.setVisible(false);
 				return;
 			}
 			else if (wgetFinished){
+				jbDownload.setVisible(true);
 				userInfo.setText("Download has completed!");
 				pb.setVisible(false);
 				jbCancel.setVisible(false);
 
 			}else{
+				jbDownload.setVisible(true);
 				pb.setVisible(false);
 				jbCancel.setVisible(false);
 			}
@@ -264,6 +278,8 @@ public class Download extends JPanel{
 
 		@Override
 		protected Integer doInBackground() throws Exception {
+			jbCancel.setVisible(true);
+			jbDownload.setVisible(false);
 			String URLname = urlInput.getText();
 			wgetFinished = false;
 			//String URLname = "http://ccmixter.org/content/_ghost/_ghost_-_Reverie_(small_theme).mp3";
