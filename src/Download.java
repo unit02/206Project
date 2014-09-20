@@ -214,6 +214,7 @@ public class Download extends JPanel{
 		JButton jbDownload = new JButton("Download");
 		JPanel darkBluePanel = new JPanel();
 		darkBluePanel.setOpaque(true);
+		
 		darkBluePanel.setBackground(new Color(66,107,122));
 		darkBluePanel.setPreferredSize(new Dimension(200, 40));
 		addButtonToPane(darkBluePanel,jbDownload);	
@@ -225,9 +226,10 @@ public class Download extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 
 				pane.removeAll();
+				panel1.removeAll();
 				pane.setPreferredSize(new Dimension(200,200));
 				frame.getContentPane().add(pane, BorderLayout.SOUTH);
-				pane.add(panel1);
+				pane.addTab("Download",panel1);
 
 
 				lay = new SpringLayout();

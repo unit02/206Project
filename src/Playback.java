@@ -23,6 +23,7 @@ import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
 public class Playback {
 
+	//define variables
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private JPanel panel;
 	private JTextField text;
@@ -43,7 +44,7 @@ public class Playback {
 	boolean isFastForwarding = false;
 	boolean isBackwards = false;
 
-
+//method to add button to panel
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
 		panel.validate();
@@ -52,8 +53,9 @@ public class Playback {
 	//This method creates the gui features for the panel below the top
 	public void insertGUIFeatures(final JFrame frame, final JPanel panel1, final JTabbedPane pane){	
 
-		//add button to top
+		//add button at the top
 		JButton jbPlay = new JButton("Playback");
+		//create colored background
 		JPanel swampGreenPanel = new JPanel();
 		swampGreenPanel.setOpaque(true);
 		swampGreenPanel.setBackground(new Color(73,142,99));
@@ -146,6 +148,7 @@ public class Playback {
 		timer.setText( "00:00:00 /" + videoLength);
 		text.setPreferredSize(new Dimension(400,30));
 		toolPanel.add(timer);
+		
 	}
 
 	private void addFileChoice(){
@@ -164,7 +167,8 @@ public class Playback {
 				jfile.setVisible(true);
 			}
 		});
-		panel.add(jbChoose);
+		//panel.add(jbChoose);
+		addButtonToPane(panel,jbChoose);
 
 	}
 
@@ -196,7 +200,7 @@ public class Playback {
 		mediaPlayerComponent.add(toolPanel,BorderLayout.SOUTH);	
 		//changed file for ease of testing, 
 		//TODO change back to chosen file for submission and type checking
-		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
+		mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
 		addTimer();
 	}
 
@@ -213,7 +217,7 @@ public class Playback {
 			}
 		});
 		jbPause.setVisible(true);
-		toolPanel.add(jbPause);
+		addButtonToPane(toolPanel,jbPause);
 	}
 
 	private void addPlayButton(){
@@ -230,7 +234,7 @@ public class Playback {
 			}
 		});
 		jbBegin.setVisible(false);
-		toolPanel.add(jbBegin);
+		addButtonToPane(toolPanel,jbBegin);
 	}
 
 	private void addFFButton(){
@@ -248,7 +252,7 @@ public class Playback {
 			}
 		});
 
-		toolPanel.add(jbFast);
+		addButtonToPane(toolPanel,jbFast);
 
 	}
 
@@ -265,7 +269,7 @@ public class Playback {
 				jbBack.setEnabled(false);
 			}
 		});
-		toolPanel.add(jbBack);
+		addButtonToPane(toolPanel,jbBack);
 
 	}
 
@@ -309,11 +313,11 @@ public class Playback {
 			public void actionPerformed(ActionEvent e) {
 				if(mediaPlayerComponent.getMediaPlayer().isMute()){
 					mediaPlayerComponent.getMediaPlayer().mute(false);
-
+					jbMute.setText("Mute");
 
 				} else {
 					mediaPlayerComponent.getMediaPlayer().mute(true);
-
+					jbMute.setText("Unmute");
 				}
 			}
 		});
