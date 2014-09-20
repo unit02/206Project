@@ -29,6 +29,7 @@ public class Playback {
 	private JFrame mediaFrame;
 	private SpringLayout layout = new SpringLayout();
 
+	private JTextField timer;
 	private JPanel toolPanel;
 	private JButton jbBegin;
 	private JButton jbChoose;
@@ -137,6 +138,15 @@ public class Playback {
 		text.setPreferredSize(new Dimension(400,30));
 	}
 
+	private void addTimer(){
+		//add text field to show which file chosen
+		timer = new JTextField();
+		timer.setEditable(false);
+		long videoLength = mediaPlayerComponent.getMediaPlayer().getLength();
+		timer.setText( "00:00:00 /" + videoLength);
+		text.setPreferredSize(new Dimension(400,30));
+		toolPanel.add(timer);
+	}
 
 	private void addFileChoice(){
 		jbChoose = new JButton("Choose File");
@@ -180,12 +190,14 @@ public class Playback {
 		addFFButton();
 		addMuteButton();
 		addVolumeControl();
+		
 		BorderLayout lay = new BorderLayout();		
 		mediaPlayerComponent.setLayout(lay);
 		mediaPlayerComponent.add(toolPanel,BorderLayout.SOUTH);	
 		//changed file for ease of testing, 
 		//TODO change back to chosen file for submission and type checking
 		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
+		addTimer();
 	}
 
 	private void addPauseButton(){
