@@ -200,7 +200,8 @@ public class Playback {
 		mediaPlayerComponent.add(toolPanel,BorderLayout.SOUTH);	
 		//changed file for ease of testing, 
 		//TODO change back to chosen file for submission and type checking
-		mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
+		//mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
+		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
 		addTimer();
 	}
 

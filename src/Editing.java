@@ -39,14 +39,16 @@ public class Editing {
 				pane.removeAll();
 				pane.setPreferredSize(new Dimension(200,200));
 				
-				//add tabs at the top of the tabbed pane
-				JPanel removePanel = new JPanel();
+//				//add tabs at the top of the tabbed pane
+//				JPanel removePanel = new JPanel();
+//				pane.addTab( "Remove Audio", removePanel);
+				editAudio ea = new editAudio();
+				ea.insertRemoveAudio(pane);
 				JPanel replacePanel = new JPanel();
 				JPanel overlayPanel = new JPanel();
 				JPanel titlePanel = new JPanel();
 				JPanel creditsPanel = new JPanel();
-				pane.addTab( "Remove Audio", removePanel);
-				pane.addTab( "Replace Audio", replacePanel);
+					pane.addTab( "Replace Audio", replacePanel);
 				pane.addTab( "Overlay Audio", overlayPanel);
 				pane.addTab( "Add Title", titlePanel);
 				pane.addTab( "Add Credits", creditsPanel);
