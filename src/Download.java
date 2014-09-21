@@ -209,7 +209,7 @@ public class Download extends JPanel{
 
 	}
 
-	public void insertGUIFeatures(final JFrame frame, final JPanel panel1, final JTabbedPane pane){
+	public void insertGUIFeatures(final JFrame frame,final JPanel panel1, final JTabbedPane pane2,final JTabbedPane pane3, final JTabbedPane pane){
 		//add button to top
 		JButton jbDownload = new JButton("Download");
 		JPanel darkBluePanel = new JPanel();
@@ -219,29 +219,47 @@ public class Download extends JPanel{
 		darkBluePanel.setPreferredSize(new Dimension(200, 40));
 		addButtonToPane(darkBluePanel,jbDownload);	
 		frame.getContentPane().add(darkBluePanel, BorderLayout.EAST);
+		
+		pane.removeAll();
+		panel1.removeAll();
+		pane.setPreferredSize(new Dimension(200,200));
+		pane.addTab("Download",panel1);
+		lay = new SpringLayout();
+		panel1.setLayout(lay);
+
+		addTextFields(panel1);
+		createDownloadButton(panel1);
+		createCancelButton(panel1);
+		addProgressBar(panel1);
 
 		jbDownload.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				pane.removeAll();
-				panel1.removeAll();
-				pane.setPreferredSize(new Dimension(200,200));
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);
-				pane.addTab("Download",panel1);
-
-
-				lay = new SpringLayout();
-				panel1.setLayout(lay);
-
-				addTextFields(panel1);
-				createDownloadButton(panel1);
-				createCancelButton(panel1);
-				addProgressBar(panel1);
-				frame.pack();
-				frame.repaint();
-				frame.validate();
+				if (pane2.isVisible()){
+					frame.getContentPane().remove(pane2);
+					pane2.setVisible(false);
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);
+					pane.setVisible(true);
+				}
+				else if (pane3.isVisible()){
+					frame.getContentPane().remove(pane3);
+					pane3.setVisible(false);
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);
+					pane.setVisible(true);
+				}
+				else if (pane.isVisible()){
+					frame.getContentPane().remove(pane);
+					frame.pack();
+					frame.validate();
+					pane.setVisible(false);
+				}
+				else if (pane.isVisible() == false){
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);			
+					pane.setVisible(true);
+					frame.pack();
+					frame.validate();
+				}
 			}
 
 
@@ -348,4 +366,3 @@ public class Download extends JPanel{
 
 	}
 }
-

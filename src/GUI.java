@@ -39,20 +39,22 @@ public class GUI {
 		JPanel panel1 = new JPanel();
 		panel1.setLayout( null );
 	
-		JTabbedPane pane = new JTabbedPane();
-	
+		JTabbedPane downloadPane = new JTabbedPane();	
+		JTabbedPane editPane = new JTabbedPane();
+		
+		JTabbedPane playbackPane = new JTabbedPane();	
 
 
 		// Create the three buttons, download, extract and history(log)
 
 		Download dl = new Download();
-		dl.insertGUIFeatures(frame,panel1,pane);
+		dl.insertGUIFeatures(frame,panel1,editPane,playbackPane,downloadPane);
 
 		Editing edit = new Editing();
-		edit.addGUIComponents(frame,panel1,pane);
+		edit.addGUIComponents(frame,downloadPane,playbackPane,editPane);
 
 		Playback pb = new Playback();
-		pb.insertGUIFeatures(frame, panel1,pane);
+		pb.insertGUIFeatures(frame, downloadPane,editPane,playbackPane);
 
 		frame.pack();
 		frame.setVisible(true);

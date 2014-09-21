@@ -44,14 +44,14 @@ public class Playback {
 	boolean isFastForwarding = false;
 	boolean isBackwards = false;
 
-//method to add button to panel
+	//method to add button to panel
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
 		panel.validate();
 	}
 
 	//This method creates the gui features for the panel below the top
-	public void insertGUIFeatures(final JFrame frame, final JPanel panel1, final JTabbedPane pane){	
+	public void insertGUIFeatures(final JFrame frame, final JTabbedPane pane2, final JTabbedPane pane3, final JTabbedPane pane){	
 
 		//add button at the top
 		JButton jbPlay = new JButton("Playback");
@@ -63,47 +63,74 @@ public class Playback {
 		addButtonToPane(swampGreenPanel,jbPlay);
 		frame.getContentPane().add(swampGreenPanel, BorderLayout.WEST);
 
+		//remove all elements from previous tabs
+		pane.removeAll();
+		panel = new JPanel();		
+		pane.addTab("Play Files",panel);
+		panel.setLayout(layout);
+
+		//add file selection text box
+		addTextBox();
+		//add file chooser
+		addFileChoice();
+		//add start button
+		addStartButton();
+
+		//move the text box to its location
+		layout.putConstraint(SpringLayout.WEST, text, 15, SpringLayout.WEST, pane);
+		layout.putConstraint(SpringLayout.NORTH, text, 25, SpringLayout.NORTH, pane);
+
+		////move the file choice button to its location
+		layout.putConstraint(SpringLayout.WEST, jbChoose, 15, SpringLayout.WEST, pane);
+		layout.putConstraint(SpringLayout.NORTH, jbChoose, 25, SpringLayout.NORTH, text);
+
+		//move the start button to its location
+		layout.putConstraint(SpringLayout.WEST, jbBegin, 35, SpringLayout.WEST, pane);
+		layout.putConstraint(SpringLayout.NORTH, jbBegin, 50, SpringLayout.NORTH, jbChoose);
+
+
 		//when the button is pressed, the panel below refreshes with the appropriate layout
 		jbPlay.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				//remove all elements from previous tabs
-				pane.removeAll();
-				panel = new JPanel();		
-				pane.add(panel);
-				panel.setLayout(layout);
-
-				//add file selection text box
-				addTextBox();
-				//add file chooser
-				addFileChoice();
-				//add start button
-				addStartButton();
-
-				//move the text box to its location
-				layout.putConstraint(SpringLayout.WEST, text, 15, SpringLayout.WEST, pane);
-				layout.putConstraint(SpringLayout.NORTH, text, 25, SpringLayout.NORTH, pane);
-
-				////move the file choice button to its location
-				layout.putConstraint(SpringLayout.WEST, jbChoose, 15, SpringLayout.WEST, pane);
-				layout.putConstraint(SpringLayout.NORTH, jbChoose, 25, SpringLayout.NORTH, text);
-
-				//move the start button to its location
-				layout.putConstraint(SpringLayout.WEST, jbBegin, 35, SpringLayout.WEST, pane);
-				layout.putConstraint(SpringLayout.NORTH, jbBegin, 50, SpringLayout.NORTH, jbChoose);
-
-
 				pane.setPreferredSize(new Dimension(200,200));
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);			
-				frame.pack();
-				frame.repaint();
-				frame.validate();
+				{
+					if (pane2.isVisible()){
+						frame.getContentPane().remove(pane2);
+						pane2.setVisible(false);
+						frame.getContentPane().add(pane, BorderLayout.SOUTH);
+						pane.setVisible(true);
+					}
+					else if (pane3.isVisible()){
+						frame.getContentPane().remove(pane3);
+						pane3.setVisible(false);
+						frame.getContentPane().add(pane, BorderLayout.SOUTH);
+						pane.setVisible(true);
+					}
+					else if (pane.isVisible()){
+						frame.getContentPane().remove(pane);
+						frame.pack();
+						frame.validate();
+						pane.setVisible(false);
+					}
+					else if (pane.isVisible() == false){
+						frame.getContentPane().add(pane, BorderLayout.SOUTH);			
+						pane.setVisible(true);
+						frame.pack();
+						frame.validate();
+					}
+					frame.pack();
+					frame.repaint();
+					frame.validate();
+
+				}
 			}
 
 
 		});
+
 	}
 
 
@@ -130,8 +157,6 @@ public class Playback {
 
 
 
-
-
 	private void addTextBox(){
 		//add text field to show which file chosen
 		text = new JTextField();
@@ -148,7 +173,7 @@ public class Playback {
 		timer.setText( "00:00:00 /" + videoLength);
 		text.setPreferredSize(new Dimension(400,30));
 		toolPanel.add(timer);
-		
+
 	}
 
 	private void addFileChoice(){
@@ -182,7 +207,7 @@ public class Playback {
 		mediaFrame.setLocation(100, 100);
 		mediaFrame.setSize(1050, 600);
 		mediaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		mediaFrame.setVisible(true);
 
 		//set up layout and add tool panel
@@ -194,7 +219,7 @@ public class Playback {
 		addFFButton();
 		addMuteButton();
 		addVolumeControl();
-		
+
 		BorderLayout lay = new BorderLayout();		
 		mediaPlayerComponent.setLayout(lay);
 		mediaPlayerComponent.add(toolPanel,BorderLayout.SOUTH);	
@@ -202,6 +227,7 @@ public class Playback {
 		//TODO change back to chosen file for submission and type checking
 		//mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
 		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
+		
 		addTimer();
 	}
 
@@ -338,6 +364,5 @@ public class Playback {
 
 	}
 }
-
 
 
