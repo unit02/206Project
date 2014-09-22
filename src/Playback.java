@@ -214,14 +214,14 @@ boolean isPlaying;
 		isPlaying = true;
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 		mediaPlayerComponent.setSize(450, 550);
-		mediaFrame.setContentPane(mediaPlayerComponent);		
+		mediaFrame.setContentPane(mediaPlayerComponent);
+		//sets location for the video frame to appear
 		Point p = frame.getLocationOnScreen();
 		mediaFrame.setLocation(p.x + 780, p.y -25);
 		mediaFrame.setSize(700, 230);
 		mediaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 		mediaFrame.setVisible(true);
-
+		//adds listener to listen for when the jframe is closed
 		mediaFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(WindowEvent windowEvent) {
@@ -237,18 +237,9 @@ boolean isPlaying;
 		    @Override
 		    public void componentResized(ComponentEvent e) {
 		        //Get size of frame and do cool stuff with it 
-		    	//System.out.print(	mediaPlayerComponent.getMediaPlayer().getLength());
-		    	mediaPlayerComponent.getMediaPlayer().stop();
-		    	mediaPlayerComponent.getMediaPlayer().play();
-		    
-		    	//mediaPlayerComponent.setSize(width, height);
+		    	//on video resize, resize the video
 		    }
 
-			@Override
-			public void componentHidden(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
 
 			@Override
 			public void componentMoved(ComponentEvent arg0) {
@@ -258,6 +249,14 @@ boolean isPlaying;
 
 			@Override
 			public void componentShown(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+
+
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}

@@ -50,8 +50,7 @@ private File inputFile;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//removeSwingWorker sw = new removeSwingWorker();
-
+				
 				String inputName = fileChoice.getText() ;
 				String outputName = titleName.getText();
 
@@ -63,7 +62,9 @@ private File inputFile;
 				}
 				else {
 					//else file does not exist and we can download
-			//		sw.execute();
+					removeSwingWorker sw = new removeSwingWorker();
+
+					sw.execute();
 				} // end else
 
 			}//end action performed
@@ -71,22 +72,21 @@ private File inputFile;
 	}
 	
 	
-	private class RemoveSwingWorker extends SwingWorker<Integer,String>{
+	private class removeSwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
 			userInfo.setText("Stripping of audio has been completed!");	
-			
 		}
 
 
 		@Override
 		protected Integer doInBackground() throws Exception {		
-			String name = inputFile.getAbsolutePath();
+			String file = inputFile.getAbsolutePath();
 			String outputName = titleName.getText() + ".mp3";
 
 			//creates the process for avconv
 
-			ProcessBuilder builder = new ProcessBuilder("avconv","-i", name ,"-ss","-t",outputName);
+			ProcessBuilder builder = new ProcessBuilder("avconv", "-i", file, "-acodec", "libmp3lame", outputName);
 
 			userInfo.setText("Stripping of audio is in progress...");
 			Process process = builder.start();
