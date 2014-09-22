@@ -204,10 +204,9 @@ boolean isPlaying;
 	}
 
 	private void startMediaPlayer(String chosenfile){
-	
+
 		//video player code from http://www.capricasoftware.co.uk/projects/vlcj/tutorial2.html with minor edits
 		mediaFrame = new JFrame();
-		
 		if(isPlaying){
 			return;
 		}
@@ -215,6 +214,7 @@ boolean isPlaying;
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 		mediaPlayerComponent.setSize(450, 550);
 		mediaFrame.setContentPane(mediaPlayerComponent);
+	mediaFrame.setPreferredSize(new Dimension(mediaPlayerComponent.getWidth(),mediaPlayerComponent.getHeight())) ;
 		//sets location for the video frame to appear
 		Point p = frame.getLocationOnScreen();
 		mediaFrame.setLocation(p.x + 780, p.y -25);
@@ -238,6 +238,8 @@ boolean isPlaying;
 		    public void componentResized(ComponentEvent e) {
 		        //Get size of frame and do cool stuff with it 
 		    	//on video resize, resize the video
+		    //	mediaFrame.resize(mediaPlayerComponent.getWidth(),mediaPlayerComponent.getHeight());
+		 //  mediaPlayerComponent.resize(mediaFrame.getWidth(), mediaFrame.getHeight());
 		    }
 
 

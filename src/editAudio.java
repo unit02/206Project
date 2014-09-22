@@ -51,7 +51,6 @@ private File inputFile;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				String inputName = fileChoice.getText() ;
 				String outputName = titleName.getText();
 
 
