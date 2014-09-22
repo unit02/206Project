@@ -20,7 +20,6 @@ import javax.swing.SwingWorker;
 public class editAudio {
 	private JButton jbChoose;
 	private JButton jbRemove;
-
 	private JTextField userInfo;
 	private JTextField fileChoice;
 	private JTextField titleName;
