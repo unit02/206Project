@@ -1,6 +1,10 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -8,6 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingWorker;
+
+
 
 
 public class editAudio {
@@ -19,7 +26,7 @@ public class editAudio {
 	private JTextField titleName;
 	private JTextField mp3Display;
 	SpringLayout layout = new SpringLayout();
-
+private File inputFile;
 	//method to add tab to the tabbed pane 
 	public void insertRemoveAudio(final JTabbedPane pane){
 		//add tabs at the top of the tabbed pane
@@ -34,16 +41,68 @@ public class editAudio {
 		addTitleFeatures(panel);
 		jbRemove = new JButton("Strip audio off file");
 		panel.add(jbRemove);
-
+ 
 		//move the text box containing user file choice button to its location
 		layout.putConstraint(SpringLayout.WEST, jbRemove, 15, SpringLayout.WEST, panel);
 		layout.putConstraint(SpringLayout.NORTH, jbRemove, 70, SpringLayout.NORTH, fileChoice);
 
 		jbRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//removeSwingWorker sw = new removeSwingWorker();
+
+				String inputName = fileChoice.getText() ;
+				String outputName = titleName.getText();
+
+
+				File f = new File(outputName);
+				if(f.exists() && !f.isDirectory()) { 
+					userInfo.setText("File already exists!");
+					return;
+				}
+				else {
+					//else file does not exist and we can download
+			//		sw.execute();
+				} // end else
+
+			}//end action performed
+		}); // end add action listener
+	}
+	
+	
+	private class RemoveSwingWorker extends SwingWorker<Integer,String>{
+
+		protected void done(){
+			userInfo.setText("Stripping of audio has been completed!");	
+			
+		}
+
+
+		@Override
+		protected Integer doInBackground() throws Exception {		
+			String name = inputFile.getAbsolutePath();
+			String outputName = titleName.getText() + ".mp3";
+
+			//creates the process for avconv
+
+			ProcessBuilder builder = new ProcessBuilder("avconv","-i", name ,"-ss","-t",outputName);
+
+			userInfo.setText("Stripping of audio is in progress...");
+			Process process = builder.start();
+
+			//redirects input and error streams
+			InputStream stdout = process.getInputStream();
+			InputStream stderr = process.getErrorStream();
+			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+			String line = null;
+
+			//sends the dot progress bar to the process function for processing
+			while ((line = stdoutBuffered.readLine()) != null ) {	
+				publish(line);
 			}
-		});
+			return null;
+		}
 
 
 	}
@@ -51,13 +110,13 @@ public class editAudio {
 	private void addTitleFeatures(final JPanel panel){
 		//add the user input box for the title of the output file
 		titleName = new JTextField();
-		titleName.setPreferredSize(new Dimension(200,20));
+		titleName.setPreferredSize(new Dimension(50,20));
 		panel.add(titleName);
 		//move the mp3 output file name to its location on the screen
 		layout.putConstraint(SpringLayout.WEST, titleName, 15, SpringLayout.WEST, panel);
 		layout.putConstraint(SpringLayout.NORTH, titleName, 55, SpringLayout.NORTH, panel);
-		
-		
+
+
 		mp3Display = new JTextField();
 		mp3Display.setText(".mp3");
 		mp3Display.setEditable(false);
@@ -66,7 +125,7 @@ public class editAudio {
 		//move the choose file button to its location
 		layout.putConstraint(SpringLayout.WEST, mp3Display, 85, SpringLayout.WEST, panel);
 		layout.putConstraint(SpringLayout.NORTH, mp3Display, 55, SpringLayout.NORTH, panel);
-	
+
 	}
 	private void addFileChooser(final JPanel panel){
 		//create and add functionality for file choosing button
@@ -78,6 +137,7 @@ public class editAudio {
 				JFileChooser jfile = new JFileChooser();
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
+					inputFile = jfile.getSelectedFile();
 					String chosenFile = jfile.getSelectedFile().toString();
 					fileChoice.setText(chosenFile);
 				}
@@ -111,12 +171,6 @@ public class editAudio {
 		panel.add(userInfo);
 
 	}
-
-
-
-
-
-
 
 	public void insertReplaceAudio(final JTabbedPane pane){
 		//add tabs at the top of the tabbed pane

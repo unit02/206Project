@@ -3,8 +3,13 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -30,6 +35,7 @@ public class Playback {
 	private JFrame mediaFrame;
 	private SpringLayout layout = new SpringLayout();
 
+	private JFrame frame;
 	private JTextField timer;
 	private JPanel toolPanel;
 	private JButton jbBegin;
@@ -38,12 +44,11 @@ public class Playback {
 	private JButton jbFast;
 	private JButton jbBack;
 	private JButton jbMute;
-
 	private JSlider volumeControl;
 
 	boolean isFastForwarding = false;
 	boolean isBackwards = false;
-
+boolean isPlaying;
 	//method to add button to panel
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
@@ -51,8 +56,9 @@ public class Playback {
 	}
 
 	//This method creates the gui features for the panel below the top
-	public void insertGUIFeatures(final JFrame frame, final JTabbedPane pane2, final JTabbedPane pane3, final JTabbedPane pane){	
+	public void insertGUIFeatures(final JFrame frame1, final JTabbedPane pane2, final JTabbedPane pane3, final JTabbedPane pane){	
 
+		frame = frame1;
 		//add button at the top
 		JButton jbPlay = new JButton("Playback");
 		//create colored background
@@ -197,19 +203,66 @@ public class Playback {
 
 	}
 
-
-
 	private void startMediaPlayer(String chosenfile){
+	
 		//video player code from http://www.capricasoftware.co.uk/projects/vlcj/tutorial2.html with minor edits
 		mediaFrame = new JFrame();
+		
+		if(isPlaying){
+			return;
+		}
+		isPlaying = true;
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-		mediaFrame.setContentPane(mediaPlayerComponent);
-		mediaFrame.setLocation(100, 100);
-		mediaFrame.setSize(1050, 600);
+		mediaPlayerComponent.setSize(450, 550);
+		mediaFrame.setContentPane(mediaPlayerComponent);		
+		Point p = frame.getLocationOnScreen();
+		mediaFrame.setLocation(p.x + 780, p.y -25);
+		mediaFrame.setSize(700, 230);
 		mediaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		mediaFrame.setVisible(true);
 
+		mediaFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent windowEvent) {
+		    	mediaPlayerComponent.getMediaPlayer().stop();
+		    	isPlaying = false;
+		    }
+		    
+		    
+		});
+		
+		mediaFrame.addComponentListener(new ComponentListener(){
+			
+		    @Override
+		    public void componentResized(ComponentEvent e) {
+		        //Get size of frame and do cool stuff with it 
+		    	//System.out.print(	mediaPlayerComponent.getMediaPlayer().getLength());
+		    	mediaPlayerComponent.getMediaPlayer().stop();
+		    	mediaPlayerComponent.getMediaPlayer().play();
+		    
+		    	//mediaPlayerComponent.setSize(width, height);
+		    }
+
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		//set up layout and add tool panel
 
 		toolPanel = new JPanel();
@@ -361,6 +414,12 @@ public class Playback {
 			}
 		});
 		toolPanel.add(volumeControl);
+
+	}
+	
+	
+	private void resize(){
+	
 
 	}
 }

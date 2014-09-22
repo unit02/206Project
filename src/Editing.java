@@ -52,7 +52,6 @@ public class Editing {
 				pane2.setVisible(false);
 				frame.getContentPane().add(pane, BorderLayout.SOUTH);
 				pane.setVisible(true);
-				
 			}
 			else if (pane3.isVisible()){
 				frame.getContentPane().remove(pane3);
