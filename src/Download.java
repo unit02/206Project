@@ -214,12 +214,12 @@ public class Download extends JPanel{
 		JButton jbDownload = new JButton("Download");
 		JPanel darkBluePanel = new JPanel();
 		darkBluePanel.setOpaque(true);
-		
+
 		darkBluePanel.setBackground(new Color(66,107,122));
 		darkBluePanel.setPreferredSize(new Dimension(200, 40));
 		addButtonToPane(darkBluePanel,jbDownload);	
 		frame.getContentPane().add(darkBluePanel, BorderLayout.EAST);
-		
+
 		pane.removeAll();
 		panel1.removeAll();
 		pane.setPreferredSize(new Dimension(200,200));
@@ -231,16 +231,21 @@ public class Download extends JPanel{
 		createDownloadButton(panel1);
 		createCancelButton(panel1);
 		addProgressBar(panel1);
-
+		
+		// ActionListener on the download button that checks whether or not the tab for
+		// Download or any other tabs, such as editting and playback is open or not,
+		// and adds and removes the tabs accordingly. 
 		jbDownload.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				if (pane2.isVisible()){
 					frame.getContentPane().remove(pane2);
 					pane2.setVisible(false);
 					frame.getContentPane().add(pane, BorderLayout.SOUTH);
 					pane.setVisible(true);
+
 				}
 				else if (pane3.isVisible()){
 					frame.getContentPane().remove(pane3);
@@ -248,18 +253,20 @@ public class Download extends JPanel{
 					frame.getContentPane().add(pane, BorderLayout.SOUTH);
 					pane.setVisible(true);
 				}
-				else if (pane.isVisible()){
-					frame.getContentPane().remove(pane);
-					frame.pack();
-					frame.validate();
-					pane.setVisible(false);
-				}
+
 				else if (pane.isVisible() == false){
-					frame.getContentPane().add(pane, BorderLayout.SOUTH);			
 					pane.setVisible(true);
-					frame.pack();
-					frame.validate();
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);
 				}
+				else if (pane.isVisible()){
+					pane.setVisible(false);
+					frame.getContentPane().remove(pane);
+				}		
+
+				frame.pack();
+				frame.repaint();
+				frame.validate();
+
 			}
 
 
