@@ -27,8 +27,6 @@ public class Editing {
 	lightGreenPanel.setPreferredSize(new Dimension(200, 40));
 	addButtonToPane(lightGreenPanel,jbEdit);
 	frame.getContentPane().add(lightGreenPanel, BorderLayout.CENTER);
-	JPanel titlePanel = new JPanel();
-	JPanel creditsPanel = new JPanel();
 	pane.removeAll();
 	pane.setPreferredSize(new Dimension(200,200));
 	
@@ -37,8 +35,10 @@ public class Editing {
 	ea.insertRemoveAudio(pane);
 	ea.insertOverlayAudio(pane);
 	ea.insertReplaceAudio(pane);
-	pane.addTab( "Add Title", titlePanel);
-	pane.addTab( "Add Credits", creditsPanel);
+	
+	editVideo ev = new editVideo();
+	ev.insertTitlePageTab(pane);
+	ev.insertCreditPageTab(pane);
 	
 
 
