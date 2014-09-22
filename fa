@@ -1,0 +1,98 @@
+[33mcommit e1ff4901c0d587d0ec507216265149dd5a4f132c[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Sun Sep 21 17:19:23 2014 +1200
+
+    added gui features for strip audio
+
+[33mcommit cffba105984ef7d82339ddaf8c118129ba839480[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Sat Sep 20 18:22:35 2014 +1200
+
+    update for safety
+
+[33mcommit 6ff57ae0906ea87c6c9a93ca2df0fdd8b4b7a904[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Sat Sep 20 18:03:23 2014 +1200
+
+    about to start editing functions
+
+[33mcommit 0fc6c8fc18e12b9d25b4697c8fdb07d494bf9b3c[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Sat Sep 20 16:39:53 2014 +1200
+
+    Download completed
+
+[33mcommit b239ee88aeaed22eab9eca12a5d8690b68f94373[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Sat Sep 20 16:02:22 2014 +1200
+
+    Download area set up, need to get functionality working
+
+[33mcommit 3547de818c3eaf12f47e27b190ec72ede6c4f647[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Fri Sep 19 14:31:29 2014 +1200
+
+    added volume control
+
+[33mcommit bfe2a20d27ad6ee06f4f4b6b629fc1c00de7a6b8[m
+Merge: bbc1b9d 10dfce3
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Fri Sep 19 12:03:34 2014 +1200
+
+    making sure master is up to date
+
+[33mcommit bbc1b9d7b3e6bbcdc833d5e09fa22b5be23507b5[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Fri Sep 19 00:46:09 2014 +1200
+
+    Added media playback buttons
+
+[33mcommit 10dfce3c38e41acb679c9a2b6d196456698c9049[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Thu Sep 18 19:30:41 2014 +1200
+
+    Added file chooser
+
+[33mcommit f204dc822ceb9f2d6443256e64e5322410b77a5b[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Thu Sep 18 18:11:50 2014 +1200
+
+    added expanding menu area for playback class
+
+[33mcommit ad123be6daf6a3ab9882a642afb3627630043de5[m
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Thu Sep 18 17:29:28 2014 +1200
+
+    added playback
+
+[33mcommit 14e00b21fd0daad744a16d563a64eb9b4656c56c[m
+Merge: 67bdf07 dd9cd40
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Thu Sep 18 17:10:32 2014 +1200
+
+    Merge branch 'master' of https://github.com/unit02/206Project
+
+[33mcommit dd9cd409a91eaec5b85de101cc134b528674e18e[m
+Author: Elizabeth Orchard <elizaorchard@gmail.com>
+Date:   Thu Sep 18 17:08:35 2014 +1200
+
+    Initial commit
+
+[33mcommit 67bdf0797fb3522c99683696aefea5918f801714[m
+Merge: adbef38 6cf9532
+Author: unit02 <elizaorchard@gmail.com>
+Date:   Thu Sep 18 12:57:25 2014 +1200
+
+    Merge branch 'master' of https://github.com/unit02/206Project
+
+[33mcommit adbef38401739f676eb0525100f24966c52532f3[m
+Author: Eliza <elizaorchard@gmail.com>
+Date:   Thu Sep 18 12:51:21 2014 +1200
+
+    Added Main file
+
+[33mcommit 6cf953207d7d078fca43125d2f8bd78c7950e580[m
+Author: Elizabeth Orchard <elizaorchard@gmail.com>
+Date:   Thu Sep 11 12:44:09 2014 +1200
+
+    Initial commit
