@@ -31,10 +31,13 @@ public class Editing {
 	pane.setPreferredSize(new Dimension(200,200));
 	
 	
-	editAudio ea = new editAudio();
-	ea.insertRemoveAudio(pane);
-	ea.insertOverlayAudio(pane);
-	ea.insertReplaceAudio(pane);
+	overlayAudio oa = new overlayAudio();
+	stripAudio sa = new stripAudio();
+	replaceAudio ra = new replaceAudio();
+
+	sa.insertRemoveAudio(pane);
+	oa.insertOverlayAudio(pane);
+	ra.insertReplaceAudio(pane);
 	
 	editVideo ev = new editVideo();
 	ev.insertTitlePageTab(pane);
