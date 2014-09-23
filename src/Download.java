@@ -219,7 +219,8 @@ public class Download extends JPanel{
 		darkBluePanel.setPreferredSize(new Dimension(200, 40));
 		addButtonToPane(darkBluePanel,jbDownload);	
 		frame.getContentPane().add(darkBluePanel, BorderLayout.EAST);
-
+		JPanel jp = new JPanel();
+		//frame.getContentPane().add(jp,BorderLayout.EAST);
 		pane.removeAll();
 		panel1.removeAll();
 		pane.setPreferredSize(new Dimension(200,200));
@@ -312,7 +313,8 @@ public class Download extends JPanel{
 			//String URLname = "http://ccmixter.org/content/_ghost/_ghost_-_Reverie_(small_theme).mp3";
 			userInfo.setText("Download in progress");
 			prog = 0;
-			String homePath = System.getProperty("user.home");
+
+			String homePath = System.getProperty("user.home") + "/Downloads/";
 			//creates the process for wget
 			ProcessBuilder builder = new ProcessBuilder("wget","-P",homePath, "--progress=dot",URLname);
 			Process process = builder.start();

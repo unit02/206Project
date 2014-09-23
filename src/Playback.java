@@ -1,6 +1,7 @@
 
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -10,10 +11,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
@@ -24,6 +29,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 
 
 public class Playback {
@@ -48,7 +56,7 @@ public class Playback {
 
 	boolean isFastForwarding = false;
 	boolean isBackwards = false;
-boolean isPlaying;
+	boolean isPlaying;
 	//method to add button to panel
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
@@ -88,7 +96,7 @@ boolean isPlaying;
 
 		////move the file choice button to its location
 		layout.putConstraint(SpringLayout.WEST, jbChoose, 15, SpringLayout.WEST, pane);
-		layout.putConstraint(SpringLayout.NORTH, jbChoose, 25, SpringLayout.NORTH, text);
+		layout.putConstraint(SpringLayout.NORTH, jbChoose, 30, SpringLayout.NORTH, text);
 
 		//move the start button to its location
 		layout.putConstraint(SpringLayout.WEST, jbBegin, 35, SpringLayout.WEST, pane);
@@ -175,9 +183,9 @@ boolean isPlaying;
 		//add text field to show which file chosen
 		timer = new JTextField();
 		timer.setEditable(false);
-		long videoLength = mediaPlayerComponent.getMediaPlayer().getLength();
-		timer.setText( "00:00:00 /" + videoLength);
-		text.setPreferredSize(new Dimension(400,30));
+		timerSwingWorker tsw = new timerSwingWorker();
+		tsw.execute();
+				text.setPreferredSize(new Dimension(400,30));
 		toolPanel.add(timer);
 
 	}
@@ -198,7 +206,7 @@ boolean isPlaying;
 				jfile.setVisible(true);
 			}
 		});
-		//panel.add(jbChoose);
+		
 		addButtonToPane(panel,jbChoose);
 
 	}
@@ -211,10 +219,11 @@ boolean isPlaying;
 			return;
 		}
 		isPlaying = true;
-		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+			mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+			
 		mediaPlayerComponent.setSize(450, 550);
-		mediaFrame.setContentPane(mediaPlayerComponent);
-	mediaFrame.setPreferredSize(new Dimension(mediaPlayerComponent.getWidth(),mediaPlayerComponent.getHeight())) ;
+		mediaFrame.getContentPane().add(mediaPlayerComponent,BorderLayout.CENTER);
+		mediaFrame.setPreferredSize(new Dimension(mediaPlayerComponent.getWidth(),mediaPlayerComponent.getHeight())) ;
 		//sets location for the video frame to appear
 		Point p = frame.getLocationOnScreen();
 		mediaFrame.setLocation(p.x + 780, p.y -25);
@@ -223,36 +232,35 @@ boolean isPlaying;
 		mediaFrame.setVisible(true);
 		//adds listener to listen for when the jframe is closed
 		mediaFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(WindowEvent windowEvent) {
-		    	mediaPlayerComponent.getMediaPlayer().stop();
-		    	isPlaying = false;
-		    }
-		    
-		    
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+				mediaPlayerComponent.getMediaPlayer().stop();
+				isPlaying = false;
+			}
+
+
 		});
-		
+		BorderLayout lay = new BorderLayout();	
 		mediaFrame.addComponentListener(new ComponentListener(){
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				//Get size of frame and do cool stuff with it 
+				//on video resize, resize the video
 			
-		    @Override
-		    public void componentResized(ComponentEvent e) {
-		        //Get size of frame and do cool stuff with it 
-		    	//on video resize, resize the video
-		    //	mediaFrame.resize(mediaPlayerComponent.getWidth(),mediaPlayerComponent.getHeight());
-		 //  mediaPlayerComponent.resize(mediaFrame.getWidth(), mediaFrame.getHeight());
-		    }
+			}
 
 
 			@Override
 			public void componentMoved(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 
@@ -260,28 +268,30 @@ boolean isPlaying;
 			@Override
 			public void componentHidden(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		//set up layout and add tool panel
 
 		toolPanel = new JPanel();
+		toolPanel.setPreferredSize(new Dimension(50,30));
 		addBackButton();
 		addPauseButton();
 		addPlayButton();
 		addFFButton();
 		addMuteButton();
 		addVolumeControl();
+		//mediaFrame.add(toolPanel);
 
-		BorderLayout lay = new BorderLayout();		
-		mediaPlayerComponent.setLayout(lay);
-		mediaPlayerComponent.add(toolPanel,BorderLayout.SOUTH);	
+		mediaFrame.setLayout(lay);
+		mediaFrame.getContentPane().add(toolPanel,BorderLayout.EAST);	
+		//mediaFrame.setResizable(false);
 		//changed file for ease of testing, 
 		//TODO change back to chosen file for submission and type checking
 		//mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
 		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
-		
+
 		addTimer();
 	}
 
@@ -417,10 +427,19 @@ boolean isPlaying;
 		toolPanel.add(volumeControl);
 
 	}
-	
-	
-	private void resize(){
-	
+
+
+	private class timerSwingWorker extends SwingWorker<Integer,String>{
+
+		@Override
+		protected Integer doInBackground() throws Exception {	
+		
+			long videoLength = mediaPlayerComponent.getMediaPlayer().getTime();
+			timer.setText( "Time : " + videoLength);
+			timer.setPreferredSize(new Dimension(50,20));
+		return null;
+		}
+
 
 	}
 }
