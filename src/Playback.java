@@ -34,8 +34,9 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 
 
-public class Playback {
 
+public class Playback {
+	
 	//define variables
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private JPanel panel;
@@ -180,7 +181,7 @@ public class Playback {
 	}
 
 	private void addTimer(){
-		//add text field to show which file chosen
+		//adds timer 
 		timer = new JTextField();
 		timer.setEditable(false);
 		timerSwingWorker tsw = new timerSwingWorker();
