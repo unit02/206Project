@@ -1,12 +1,14 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingWorker;
 
 
 
@@ -59,10 +61,13 @@ public class editVideo {
 
 		jbTitlePage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				String chosenFile = text.getText();
+				startTitleEditting(chosenFile);
 			}
 		});
-
+	}
+	
+	private void startTitleEditting (String chosenFile){
 		
 	}
 	
@@ -127,5 +132,16 @@ public class editVideo {
 		layout.putConstraint(SpringLayout.NORTH, userInfo, 50, SpringLayout.NORTH, jbChoose);
 		panel.add(userInfo);
 
+	}
+	
+	
+	private class editTitleSwingworker extends SwingWorker<Integer,String>{
+
+		@Override
+		protected Integer doInBackground() throws Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 	}
 }

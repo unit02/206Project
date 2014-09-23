@@ -26,8 +26,9 @@ import javax.swing.event.ChangeListener;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
 
-public class Playback {
 
+public class Playback {
+	
 	//define variables
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private JPanel panel;
@@ -172,7 +173,7 @@ boolean isPlaying;
 	}
 
 	private void addTimer(){
-		//add text field to show which file chosen
+		//adds timer 
 		timer = new JTextField();
 		timer.setEditable(false);
 		long videoLength = mediaPlayerComponent.getMediaPlayer().getLength();
