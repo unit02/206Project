@@ -50,7 +50,7 @@ public class editVideo {
 		panel.setLayout(layout);
 		addVideoChooser(panel);
 		
-		jbTitlePage = new JButton("Strip audio off file");
+		jbTitlePage = new JButton("Set Title Page");
 		panel.add(jbTitlePage);
 
 		//move the text box containing user file choice button to its location
@@ -70,7 +70,7 @@ public class editVideo {
 		panel.setLayout(layout);
 		addVideoChooser(panel);
 		
-		jbCreditsPage = new JButton("Strip audio off file");
+		jbCreditsPage = new JButton("Set Credits Page");
 		panel.add(jbCreditsPage);
 
 		//move the text box containing user file choice button to its location
