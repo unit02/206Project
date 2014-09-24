@@ -25,6 +25,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -43,7 +44,8 @@ public class Playback {
 	private JTextField text;
 	private JFrame mediaFrame;
 	private SpringLayout layout = new SpringLayout();
-
+private EmbeddedMediaPlayer video;
+	
 	private JFrame frame;
 	private JTextField timer;
 	private JPanel toolPanel;
@@ -181,12 +183,24 @@ public class Playback {
 	}
 
 	private void addTimer(){
-		//adds timer 
+		//create timer 
 		timer = new JTextField();
 		timer.setEditable(false);
-		timerSwingWorker tsw = new timerSwingWorker();
-		tsw.execute();
-		text.setPreferredSize(new Dimension(400,30));
+		timer.setPreferredSize(new Dimension(100,20));
+		Timer time = new Timer(1000, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				double time = (video.getTime()/1000.0);
+				double length = video.getLength()/1000.0;
+				timer.setText(time + "/" + length);
+			}
+			
+		}
+		);
+		//start timer
+		time.start();
+		
+		//add timer to the toolpanel
 		toolPanel.add(timer);
 
 	}
@@ -223,62 +237,39 @@ public class Playback {
 		}
 		isPlaying = true;
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-
-		mediaPlayerComponent.setSize(450, 550);
-		mediaFrame.getContentPane().add(mediaPlayerComponent,BorderLayout.CENTER);
-		mediaFrame.setPreferredSize(new Dimension(mediaPlayerComponent.getWidth(),mediaPlayerComponent.getHeight())) ;
+		
+		JPanel panel = new JPanel();
+		BorderLayout lay = new BorderLayout();	
+		panel.setLayout(lay);
+		video = mediaPlayerComponent.getMediaPlayer();
+		panel.add(mediaPlayerComponent,BorderLayout.CENTER);
+		mediaFrame.setContentPane(panel);
+		//mediaPlayerComponent.setSize(450, 550);
+	
 		//sets location for the video frame to appear
 		Point p = frame.getLocationOnScreen();
 		mediaFrame.setLocation(p.x + 780, p.y -25);
 		mediaFrame.setSize(700, 230);
 		mediaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		mediaFrame.setVisible(true);
+		
+		
 		//adds listener to listen for when the jframe is closed
 		mediaFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
-				mediaPlayerComponent.getMediaPlayer().stop();
+				video.stop();
 				isPlaying = false;
 			}
 
 
 		});
-		BorderLayout lay = new BorderLayout();	
-		mediaFrame.addComponentListener(new ComponentListener(){
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				//Get size of frame and do cool stuff with it 
-				//on video resize, resize the video
-
-			}
-
-
-			@Override
-			public void componentMoved(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void componentShown(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-
-
-			@Override
-			public void componentHidden(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
+		
+		
 		//set up layout and add tool panel
 
 		toolPanel = new JPanel();
-		toolPanel.setPreferredSize(new Dimension(50,30));
+		//toolPanel.setPreferredSize(new Dimension(50,30));
 		addBackButton();
 		addPauseButton();
 		addPlayButton();
@@ -288,12 +279,12 @@ public class Playback {
 		//mediaFrame.add(toolPanel);
 
 		mediaFrame.setLayout(lay);
-		mediaFrame.getContentPane().add(toolPanel,BorderLayout.SOUTH);	
-		mediaFrame.setResizable(false);
+		panel.add(toolPanel,BorderLayout.SOUTH);	
+		//mediaFrame.setResizable(false);
 		//changed file for ease of testing, 
 		//TODO change back to chosen file for submission and type checking
-		//mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
-		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
+		//video.playMedia(chosenfile);
+		video.playMedia("bbb.mp4");
 
 		addTimer();
 	}
@@ -305,7 +296,7 @@ public class Playback {
 			public void actionPerformed(ActionEvent e) {
 				isFastForwarding = false;
 				isBackwards = false;
-				mediaPlayerComponent.getMediaPlayer().pause();
+				video.pause();
 				jbBegin.setVisible(true);
 				jbPause.setVisible(false);
 			}
@@ -321,7 +312,7 @@ public class Playback {
 			public void actionPerformed(ActionEvent e) {
 				isFastForwarding = false;
 				isBackwards = false;
-				mediaPlayerComponent.getMediaPlayer().start();
+				video.start();
 				jbBegin.setVisible(false);
 				jbPause.setVisible(true);
 
@@ -379,7 +370,7 @@ public class Playback {
 		@Override
 		protected Integer doInBackground() throws Exception {
 			while(isFastForwarding){
-				mediaPlayerComponent.getMediaPlayer().skip(50);
+				video.skip(50);
 			}
 			return null;
 		}
@@ -394,7 +385,7 @@ public class Playback {
 		@Override
 		protected Integer doInBackground() throws Exception {
 			while(isBackwards){
-				mediaPlayerComponent.getMediaPlayer().skip(-50);
+				video.skip(-50);
 			}
 			return null;
 		}
@@ -405,12 +396,12 @@ public class Playback {
 
 		jbMute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(mediaPlayerComponent.getMediaPlayer().isMute()){
-					mediaPlayerComponent.getMediaPlayer().mute(false);
+				if(video.isMute()){
+					video.mute(false);
 					jbMute.setText("Mute");
 
 				} else {
-					mediaPlayerComponent.getMediaPlayer().mute(true);
+					video.mute(true);
 					jbMute.setText("Unmute");
 				}
 			}
@@ -423,7 +414,7 @@ public class Playback {
 		volumeControl.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int volumeLevel = volumeControl.getValue();
-				mediaPlayerComponent.getMediaPlayer().setVolume(volumeLevel);
+				video.setVolume(volumeLevel);
 
 			}
 		});
@@ -437,7 +428,7 @@ public class Playback {
 		@Override
 		protected Integer doInBackground() throws Exception {	
 
-			long videoLength = mediaPlayerComponent.getMediaPlayer().getTime();
+			long videoLength = video.getTime();
 			timer.setText( "Time : " + videoLength);
 			timer.setPreferredSize(new Dimension(50,20));
 			return null;
