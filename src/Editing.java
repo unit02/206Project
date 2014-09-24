@@ -16,7 +16,7 @@ public class Editing {
 		panel.add(button);
 		panel.validate();
 	}
-	
+	// Method to add the GUI components to the main GUI
 	public void addGUIComponents(final JFrame frame,final JTabbedPane pane2, final JTabbedPane pane3, final JTabbedPane pane){
 		
 		
@@ -39,17 +39,20 @@ public class Editing {
 	oa.insertOverlayAudio(pane);
 	ra.insertReplaceAudio(pane);
 	
+	// Insert the tabs onto the JTabbedPane
 	editVideo ev = new editVideo();
 	ev.insertTitlePageTab(pane);
 	ev.insertCreditPageTab(pane);
 	
 
-
+	// Listener for the Editing Button.
 	jbEdit.addActionListener(new ActionListener(){
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
+			// Detects and identifies if a JTabbedPane is open or not and opens and closes the Editing JTabbedPane 
+			// accordingly
 			if (pane2.isVisible()){
 				frame.getContentPane().remove(pane2);
 				pane2.setVisible(false);
