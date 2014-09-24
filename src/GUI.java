@@ -45,7 +45,8 @@ public class GUI {
 		JTabbedPane playbackPane = new JTabbedPane();	
 
 
-		// Create the three buttons, download, extract and history(log)
+		// Create the three buttons, download, editting and playback 
+		// Calls the methods that insert the GUI features into the main GUI
 
 		Download dl = new Download();
 		dl.insertGUIFeatures(frame,panel1,editPane,playbackPane,downloadPane);
