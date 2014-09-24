@@ -42,7 +42,9 @@ public class Editing {
 	// Insert the tabs onto the JTabbedPane
 	editVideo ev = new editVideo();
 	ev.insertTitlePageTab(pane);
-	ev.insertCreditPageTab(pane);
+	//ev.insertCreditPageTab(pane);
+	
+
 	
 
 	// Listener for the Editing Button.
