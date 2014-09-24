@@ -10,6 +10,17 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 
 
 public class editVideo {
@@ -67,7 +78,33 @@ public class editVideo {
 		});
 	}
 	
+	// Method is called after mp4 is chosen and "Set Title Page" button is pushed.
 	private void startTitleEditting (String chosenFile){
+		String[] cmd = {"avconv","-i","bbb.mp4","-vframes","1","-an","-s","800x444","-ss","30","TitleScreenShot.jpg"};
+		// Calls processBuilder method
+		processBuilder(cmd);
+		
+	}
+
+	// This method handles processBuilder stuff
+	private void processBuilder (String[] command){
+		ProcessBuilder builder = new ProcessBuilder(command);
+		try {
+			Process process = builder.start();
+			InputStream stdout = process.getInputStream();
+			InputStream stderr = process.getErrorStream();
+			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+			process.getInputStream().close();
+			process.getOutputStream().close();
+			process.getErrorStream().close();
+			process.destroy();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// Called after the screenshot of mp4 is taken to show the image.
+	private void showImage (String outputImage) {
 		
 	}
 	
