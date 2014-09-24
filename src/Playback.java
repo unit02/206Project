@@ -293,7 +293,7 @@ public class Playback {
 		//changed file for ease of testing, 
 		//TODO change back to chosen file for submission and type checking
 		//mediaPlayerComponent.getMediaPlayer().playMedia(chosenfile);
-		mediaPlayerComponent.getMediaPlayer().playMedia(bbb.mp4);
+		mediaPlayerComponent.getMediaPlayer().playMedia("bbb.mp4");
 
 		addTimer();
 	}
