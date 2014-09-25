@@ -194,8 +194,11 @@ public class editTitle {
 			Process process = builder.start();
 			_previewPicture = new File("TitleScreenShot.jpg");
 			String newFile = _previewPicture.getAbsolutePath();
-			System.out.println(_drawText+_fontName+_drawText2+_selectedTitleText+"'\"");
+			System.out.println("hahahah"+_drawText+_fontName+_drawText2+_selectedTitleText+"'\"");
 			String [] cmd2 = {"avconv","-i",newFile,"-vf",_drawText+_fontName+_drawText2+_selectedTitleText+"'\"","previewScreenShot.jpg"};
+			for (int i = 0;i<cmd2.length;i++){
+				System.out.println(cmd[i]);
+			}
 			ProcessBuilder builder2 = new ProcessBuilder(cmd2);
 			Process process2 = builder2.start();			
 			return null;
