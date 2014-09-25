@@ -1,6 +1,7 @@
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -9,9 +10,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -19,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
 import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 
 public class editTitle {
 
@@ -32,10 +36,17 @@ public class editTitle {
 	private JTextField _mp4Display;
 	private JTextField _fontSelection;
 	private JTextField _fontSizeSelection;
+	private JTextField _titleTextInformer;
+	private JTextField _titleTextRaw;
 	private JComboBox _fonts;
 	private JComboBox _fontSize;
 	private String _fontName;
 	private String _fontSizeString;
+	private String _selectedTitleText;
+	private String _drawText = "\"drawtext=fontfile=/usr/share/fonts/truetype/freefont/Free";
+	private String _drawText2 = ".ttf: text='";
+	private Image preview;
+	protected File _previewPicture;
 	protected File _titleInputFile;
 	SpringLayout _layout = new SpringLayout();
 	
@@ -46,8 +57,10 @@ public class editTitle {
 	
 	public void insertTitlePageTab(final JTabbedPane pane){
 		JPanel titlePagePanel = new JPanel();
-		pane.addTab("Add Title", titlePagePanel);
+		pane.addTab("Create Title Page", titlePagePanel);
 		setTitlePageFeatures(titlePagePanel);
+		_fontName = "Sans";
+		_fontSizeString = "58";
 	}
 
 	private void setTitlePageFeatures(final JPanel panel){	
@@ -58,24 +71,39 @@ public class editTitle {
 		addFontSizeOptions(panel);
 		
 		_jbPreview = new JButton("Show Preview");
-		_jbTitlePage = new JButton("Set Title Page");
+		_jbTitlePage = new JButton("Create Title Page");
 		panel.add(_jbTitlePage);
 		panel.add(_jbPreview);
 
 		//move the text box containing user file choice button to its location
 		
-		_layout.putConstraint(SpringLayout.NORTH, _jbPreview, 110, SpringLayout.NORTH, _mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH, _jbPreview, 130, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _jbPreview, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _jbTitlePage, 110, SpringLayout.NORTH, _mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH, _jbTitlePage, 130, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _jbTitlePage, 160, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH,_fonts,80,SpringLayout.NORTH,_mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH,_fonts,77,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST,_fonts,105,SpringLayout.WEST,panel);
-		_layout.putConstraint(SpringLayout.NORTH,_fontSelection,83,SpringLayout.NORTH,_mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH,_fontSelection,80,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _fontSelection, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH,_fontSize,80,SpringLayout.NORTH,_mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH,_fontSize,77,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _fontSize, 300, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _fontSizeSelection, 83, SpringLayout.NORTH, _mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH, _fontSizeSelection, 80, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST,_fontSizeSelection,187,SpringLayout.WEST,panel);
+		
+		
+		_jbPreview.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				getTitleScreenshotSW tSW = new getTitleScreenshotSW();
+				try{
+					tSW.doInBackground();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 
 
 		_jbTitlePage.addActionListener(new ActionListener() {
@@ -105,7 +133,6 @@ public class editTitle {
 		panel.add(_fontSelection);
 		_fonts.setSelectedIndex(0);
 		_fonts.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();
@@ -117,7 +144,7 @@ public class editTitle {
 	}
 	
 	private void addFontSizeOptions(JPanel panel){
-		String[] fontSizeOptions = {"8","10","12","14","16","18","20"};
+		String[] fontSizeOptions = {"40","46","52","58","64","70","76"};
 		_fontSize = new JComboBox(fontSizeOptions);
 		panel.add(_fontSize);
 		_fontSizeSelection = new JTextField();
@@ -145,8 +172,10 @@ public class editTitle {
 		protected void done(){
 			BufferedImage img = null;
 			try{
-				img = ImageIO.read(new File("TitleScreenShot.jpg"));
+				img = ImageIO.read(new File("/previewScreenShot.jpg"));
 				System.out.println("donedone");
+				JFrame f = new JFrame("Showing Preview");
+				f.add(img);
 			} catch(IOException e){
 				
 			}
@@ -156,18 +185,42 @@ public class editTitle {
 
 		@Override
 		protected Integer doInBackground() throws Exception {
+			_selectedTitleText = _titleTextRaw.getText();
 			System.out.println("doing");
 			String file = _titleInputFile.getAbsolutePath();
+			System.out.println(file);
 			String[] cmd = {"avconv","-i",file,"-vframes","1","-an","-s","800x444","-ss","30","TitleScreenShot.jpg"};
 			ProcessBuilder builder = new ProcessBuilder(cmd);
 			Process process = builder.start();
-			System.out.println("doing");
-
+			_previewPicture = new File("TitleScreenShot.jpg");
+			String newFile = _previewPicture.getAbsolutePath();
+			System.out.println(_drawText+_fontName+_drawText2+_selectedTitleText+"'\"");
+			String [] cmd2 = {"avconv","-i",newFile,"-vf",_drawText+_fontName+_drawText2+_selectedTitleText+"'\"","previewScreenShot.jpg"};
+			ProcessBuilder builder2 = new ProcessBuilder(cmd2);
+			Process process2 = builder2.start();			
 			return null;
 			
 		}
 
 
+	}
+	private void getImage(){
+		preview = new ImageIcon();
+	}
+	
+	private class titleTextOverlaySW extends SwingWorker<Integer,String>{
+		protected void done(){
+			_userInfo.setText("Title text overlay finished!");
+		}
+		
+		@Override
+		protected Integer doInBackground() throws Exception {
+			_selectedTitleText = _titleTextRaw.getText();
+			String[] cmd = {"avconv","-i",file,"-vframes","1","-an","-s","800x444","-ss","30","TitleScreenShot.jpg"};
+			ProcessBuilder builder = new ProcessBuilder(cmd);
+			Process process = builder.start();
+			return null;
+		}
 	}
 
 	private void addPanelFeatures(final JPanel panel){
@@ -179,7 +232,7 @@ public class editTitle {
 		panel.add(_titleText);
 		//move the title text to its location on the screen
 		_layout.putConstraint(SpringLayout.WEST, _titleText, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _titleText, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _titleText, 42, SpringLayout.NORTH, panel);
 
 		//add the user input box for the title of the output file
 		_titleName = new JTextField();
@@ -187,7 +240,7 @@ public class editTitle {
 		panel.add(_titleName);
 		//move the mp3 output file name to its location on the screen
 		_layout.putConstraint(SpringLayout.WEST, _titleName, 125, SpringLayout.WEST, _titleText);
-		_layout.putConstraint(SpringLayout.NORTH, _titleName, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _titleName, 42, SpringLayout.NORTH, panel);
 
 
 		_mp4Display = new JTextField();
@@ -196,9 +249,8 @@ public class editTitle {
 		_titleName.setPreferredSize(new Dimension(115,20));
 		panel.add(_mp4Display);
 		//move the choose file button to its location
-		_layout.putConstraint(SpringLayout.WEST, _mp4Display, 115
-				, SpringLayout.WEST, _titleName);
-		_layout.putConstraint(SpringLayout.NORTH, _mp4Display, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _mp4Display, 115, SpringLayout.WEST, _titleName);
+		_layout.putConstraint(SpringLayout.NORTH, _mp4Display, 42, SpringLayout.NORTH, panel);
 
 		//add textbox for error messages to be conveyed to the user
 		_userInfo = new JTextField();
@@ -209,6 +261,19 @@ public class editTitle {
 		_layout.putConstraint(SpringLayout.WEST, _userInfo, 15, SpringLayout.WEST, panel);
 		_layout.putConstraint(SpringLayout.NORTH, _userInfo, 55, SpringLayout.NORTH, _jbChoose);
 		panel.add(_userInfo);
+		
+		_titleTextInformer = new JTextField();
+		_titleTextInformer.setText("Please specify text to add to video: ");
+		_titleTextInformer.setEditable(false);
+		_layout.putConstraint(SpringLayout.NORTH, _titleTextInformer, 120,SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _titleTextInformer, 15, SpringLayout.WEST, panel);
+		panel.add(_titleTextInformer);
+		
+		_titleTextRaw = new JTextField();
+		_titleTextRaw.setPreferredSize(new Dimension (300,20));
+		panel.add(_titleTextRaw);
+		_layout.putConstraint(SpringLayout.NORTH, _titleTextRaw, 120,SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _titleTextRaw, 240, SpringLayout.WEST, _jbChoose);
 
 	}
 
@@ -234,7 +299,7 @@ public class editTitle {
 
 		//move the choose file button to its location
 		_layout.putConstraint(SpringLayout.WEST, _jbChoose, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _jbChoose, 25, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _jbChoose, 10, SpringLayout.NORTH, panel);
 
 		//creates text field to store which file the user input
 		_mp4Choice = new JTextField();
@@ -244,7 +309,7 @@ public class editTitle {
 
 		//move the text box containing user file choice button to its location
 		_layout.putConstraint(SpringLayout.WEST, _mp4Choice, 125, SpringLayout.WEST, _jbChoose);
-		_layout.putConstraint(SpringLayout.NORTH, _mp4Choice, 27, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _mp4Choice, 12, SpringLayout.NORTH, panel);
 
 
 
