@@ -24,7 +24,7 @@ public class Editing {
 		JPanel lightGreenPanel = new JPanel();
 		lightGreenPanel.setOpaque(true);
 		lightGreenPanel.setBackground(new Color(141,178,92));
-		lightGreenPanel.setPreferredSize(new Dimension(200, 40));
+		lightGreenPanel.setPreferredSize(new Dimension(250, 40));
 		addButtonToPane(lightGreenPanel,jbEdit);
 		frame.getContentPane().add(lightGreenPanel, BorderLayout.CENTER);
 		pane.removeAll();

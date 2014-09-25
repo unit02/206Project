@@ -62,6 +62,8 @@ public class editTitle {
 		_fontName = "Sans";
 		_fontSizeString = "58";
 	}
+	
+	
 
 	private void setTitlePageFeatures(final JPanel panel){	
 		panel.setLayout(_layout);
@@ -104,24 +106,30 @@ public class editTitle {
 			}
 			
 		});
+		
+		
+		
 
 
 		_jbTitlePage.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("asjfa");
 				getTitleScreenshotSW titleScreenShotSW = new getTitleScreenshotSW();
 				try {
-					titleScreenShotSW.doInBackground();
+					videoConverterSW vcSW = new videoConverterSW();
+					vcSW.doInBackground();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
-			}//end action performed
-		}); // end add action listener
+			}
+		});
 	}
+	
+	
+	
 	
 	private void addFontOptions(JPanel panel){
 		String[] fontOptions = {"Sans","Mono","Serif"};
@@ -142,6 +150,10 @@ public class editTitle {
 		});
 		
 	}
+	
+	
+	
+	
 	
 	private void addFontSizeOptions(JPanel panel){
 		String[] fontSizeOptions = {"40","46","52","58","64","70","76"};
@@ -166,19 +178,13 @@ public class editTitle {
 		
 	}
 
+	
+	
+	
 
 	private class getTitleScreenshotSW extends SwingWorker<Integer,String>{
 
 		protected void done(){
-			BufferedImage img = null;
-			try{
-				img = ImageIO.read(new File("/previewScreenShot.jpg"));
-				System.out.println("donedone");
-				JFrame f = new JFrame("Showing Preview");
-				f.add(img);
-			} catch(IOException e){
-				
-			}
 			_userInfo.setText("Displaying Preview");	
 		}
 
@@ -194,22 +200,35 @@ public class editTitle {
 			Process process = builder.start();
 			_previewPicture = new File("TitleScreenShot.jpg");
 			String newFile = _previewPicture.getAbsolutePath();
-			System.out.println("hahahah"+_drawText+_fontName+_drawText2+_selectedTitleText+"'\"");
-			String [] cmd2 = {"avconv","-i",newFile,"-vf",_drawText+_fontName+_drawText2+_selectedTitleText+"'\"","previewScreenShot.jpg"};
-			for (int i = 0;i<cmd2.length;i++){
-				System.out.println(cmd[i]);
-			}
+			System.out.println(_drawText+_fontName+_drawText2+_selectedTitleText+"'\"");
+			String [] cmd2 = {"avconv","-i",newFile,"-vf",_drawText+_fontName+_drawText2+_selectedTitleText+"'\"","asdasdas.jpg"};
 			ProcessBuilder builder2 = new ProcessBuilder(cmd2);
-			Process process2 = builder2.start();			
-			return null;
-			
+			Process process2 = builder2.start();	
+			return null;		
 		}
 
 
 	}
-	private void getImage(){
-		preview = new ImageIcon();
+	
+	
+	
+	
+	private class videoConverterSW extends SwingWorker<Integer,String>{
+
+		@Override
+		protected Integer doInBackground() throws Exception {
+			String file2 = _titleInputFile.getAbsolutePath();
+			//String[]cmd3 = {
+			
+
+			return null;
+		}
+		
 	}
+
+	
+	
+	
 	
 	private class titleTextOverlaySW extends SwingWorker<Integer,String>{
 		protected void done(){
@@ -226,6 +245,10 @@ public class editTitle {
 		}
 	}
 
+	
+	
+	
+	
 	private void addPanelFeatures(final JPanel panel){
 		//add text box requesting user to input an output name
 		_titleText = new JTextField();
@@ -280,6 +303,10 @@ public class editTitle {
 
 	}
 
+	
+	
+	
+	
 	private void addVideoChooser(final JPanel panel){
 		//create and add functionality for file choosing button
 		_jbChoose = new JButton("Choose File");
@@ -318,8 +345,7 @@ public class editTitle {
 
 	}
 	
-	private void startTitleEditing(String chosenFile){
-		
-	}
+	
+
 }
 

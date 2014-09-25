@@ -70,7 +70,7 @@ public class Playback {
 		JPanel swampGreenPanel = new JPanel();
 		swampGreenPanel.setOpaque(true);
 		swampGreenPanel.setBackground(new Color(73,142,99));
-		swampGreenPanel.setPreferredSize(new Dimension(200, 40));
+		swampGreenPanel.setPreferredSize(new Dimension(250, 40));
 		addButtonToPane(swampGreenPanel,jbPlay);
 		frame.getContentPane().add(swampGreenPanel, BorderLayout.WEST);
 
