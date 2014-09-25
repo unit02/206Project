@@ -34,6 +34,8 @@ public class editCredits {
 	private JTextField _mp4Display;
 	private JTextField _fontSelection;
 	private JTextField _fontSizeSelection;
+	private JTextField _creditsTextInformer;
+	private JTextField _creditsTextRaw;
 	private JComboBox fonts;
 	private JComboBox _fontSize;
 	private String _fontName;
@@ -44,7 +46,7 @@ public class editCredits {
 
 	public void insertCreditPageTab(final JTabbedPane pane){
 		JPanel creditPagePanel = new JPanel();
-		pane.addTab("Add Credits", creditPagePanel);
+		pane.addTab("Create Credits Page", creditPagePanel);
 		setCreditsPageFeatures(creditPagePanel);
 	}
 
@@ -62,17 +64,17 @@ public class editCredits {
 
 
 		//move the text box containing user file choice button to its location
-		_layout.putConstraint(SpringLayout.NORTH, _jbPreview, 110, SpringLayout.NORTH, _mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH, _jbPreview, 130, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _jbPreview, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _jbCreditsPage, 130, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _jbCreditsPage, 160, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _jbCreditsPage, 110, SpringLayout.NORTH, _mp4Choice);
-		_layout.putConstraint(SpringLayout.NORTH,fonts,80,SpringLayout.NORTH,_mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH,fonts,77,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST,fonts,105,SpringLayout.WEST,panel);
-		_layout.putConstraint(SpringLayout.NORTH,_fontSelection,83,SpringLayout.NORTH,_mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH,_fontSelection,80,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _fontSelection, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH,_fontSize,80,SpringLayout.NORTH,_mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH,_fontSize,77,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _fontSize, 300, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _fontSizeSelection, 83, SpringLayout.NORTH, _mp4Choice);
+		_layout.putConstraint(SpringLayout.NORTH, _fontSizeSelection, 80, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST,_fontSizeSelection,187,SpringLayout.WEST,panel);
 
 
@@ -115,7 +117,7 @@ public class editCredits {
 	}
 
 	private void addFontSizeOptions(JPanel panel){
-		String[] fontSizeOptions = {"8","10","12","14","16","18","20"};
+		String[] fontSizeOptions = {"40","46","52","58","64","70","76"};
 		_fontSize = new JComboBox(fontSizeOptions);
 		panel.add(_fontSize);
 		_fontSizeSelection = new JTextField();
@@ -177,7 +179,7 @@ public class editCredits {
 		panel.add(_creditsText);
 		//move the title text to its location on the screen
 		_layout.putConstraint(SpringLayout.WEST, _creditsText, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _creditsText, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _creditsText, 42, SpringLayout.NORTH, panel);
 
 		//add the user input box for the title of the output file
 		_creditsName = new JTextField();
@@ -185,7 +187,7 @@ public class editCredits {
 		panel.add(_creditsName);
 		//move the mp3 output file name to its location on the screen
 		_layout.putConstraint(SpringLayout.WEST, _creditsName, 125, SpringLayout.WEST, _creditsText);
-		_layout.putConstraint(SpringLayout.NORTH, _creditsName, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _creditsName, 42, SpringLayout.NORTH, panel);
 
 
 		_mp4Display = new JTextField();
@@ -194,9 +196,8 @@ public class editCredits {
 		_creditsName.setPreferredSize(new Dimension(115,20));
 		panel.add(_mp4Display);
 		//move the choose file button to its location
-		_layout.putConstraint(SpringLayout.WEST, _mp4Display, 115
-				, SpringLayout.WEST, _creditsName);
-		_layout.putConstraint(SpringLayout.NORTH, _mp4Display, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _mp4Display, 115, SpringLayout.WEST, _creditsName);
+		_layout.putConstraint(SpringLayout.NORTH, _mp4Display, 42, SpringLayout.NORTH, panel);
 
 		//add textbox for error messages to be conveyed to the user
 		_userInfo = new JTextField();
@@ -207,6 +208,19 @@ public class editCredits {
 		_layout.putConstraint(SpringLayout.WEST, _userInfo, 15, SpringLayout.WEST, panel);
 		_layout.putConstraint(SpringLayout.NORTH, _userInfo, 55, SpringLayout.NORTH, _jbChoose);
 		panel.add(_userInfo);
+		
+		_creditsTextInformer = new JTextField();
+		_creditsTextInformer.setText("Please specify text to add to video: ");
+		_creditsTextInformer.setEditable(false);
+		_layout.putConstraint(SpringLayout.NORTH, _creditsTextInformer, 120,SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _creditsTextInformer, 15, SpringLayout.WEST, panel);
+		panel.add(_creditsTextInformer);
+		
+		_creditsTextRaw = new JTextField();
+		_creditsTextRaw.setPreferredSize(new Dimension (300,20));
+		panel.add(_creditsTextRaw);
+		_layout.putConstraint(SpringLayout.NORTH, _creditsTextRaw, 120,SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _creditsTextRaw, 240, SpringLayout.WEST, _jbChoose);
 
 	}
 
@@ -232,7 +246,7 @@ public class editCredits {
 
 		//move the choose file button to its location
 		_layout.putConstraint(SpringLayout.WEST, _jbChoose, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _jbChoose, 25, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _jbChoose, 10, SpringLayout.NORTH, panel);
 
 		//creates text field to store which file the user input
 		_mp4Choice = new JTextField();
@@ -242,7 +256,7 @@ public class editCredits {
 
 		//move the text box containing user file choice button to its location
 		_layout.putConstraint(SpringLayout.WEST, _mp4Choice, 125, SpringLayout.WEST, _jbChoose);
-		_layout.putConstraint(SpringLayout.NORTH, _mp4Choice, 27, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _mp4Choice, 12, SpringLayout.NORTH, panel);
 
 
 

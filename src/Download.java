@@ -215,7 +215,7 @@ public class Download extends JPanel{
 		darkBluePanel.setOpaque(true);
 
 		darkBluePanel.setBackground(new Color(66,107,122));
-		darkBluePanel.setPreferredSize(new Dimension(200, 40));
+		darkBluePanel.setPreferredSize(new Dimension(250, 40));
 		addButtonToPane(darkBluePanel,jbDownload);	
 		frame.getContentPane().add(darkBluePanel, BorderLayout.EAST);
 
