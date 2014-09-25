@@ -10,10 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +23,7 @@ import javax.swing.SwingWorker;
 
 
 public class Download extends JPanel{
-	private Process process;
+
 	boolean isCanceled = false;
 	boolean wgetFinished = false;
 	private	JButton jbCancel;
@@ -36,7 +34,6 @@ public class Download extends JPanel{
 	private	JTextField userInfo ;
 	private JProgressBar pb = new JProgressBar();
 	int prog = 0;
-	private JPanel panel;
 	private JButton jbDownload;
 
 	private SpringLayout lay;
@@ -126,15 +123,12 @@ public class Download extends JPanel{
 						e1.printStackTrace();
 					}
 					InputStream stdout = process.getInputStream();
-					InputStream stderr = process.getErrorStream();
+					process.getErrorStream();
 					BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
-					String line = null;
-
 					try {
 						outputName = stdoutBuffered.readLine();
 
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -231,7 +225,7 @@ public class Download extends JPanel{
 		createDownloadButton(panel1);
 		createCancelButton(panel1);
 		addProgressBar(panel1);
-		
+
 		// ActionListener on the download button that checks whether or not the tab for
 		// Download or any other tabs, such as editting and playback is open or not,
 		// and adds and removes the tabs accordingly. 
@@ -317,8 +311,7 @@ public class Download extends JPanel{
 			ProcessBuilder builder = new ProcessBuilder("wget","-P",homePath, "--progress=dot",URLname);
 			Process process = builder.start();
 
-			//redirects input and error streams
-			InputStream stdout = process.getInputStream();
+			process.getInputStream();
 			InputStream stderr = process.getErrorStream();
 			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stderr));
 			String line = null;

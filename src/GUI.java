@@ -1,8 +1,5 @@
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -16,6 +13,7 @@ import javax.swing.JTabbedPane;
 
 public class GUI {
 
+	//method to add button to the panel
 	public static void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
 		panel.validate();
@@ -38,16 +36,14 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel1 = new JPanel();
 		panel1.setLayout( null );
-	
+
 		JTabbedPane downloadPane = new JTabbedPane();	
 		JTabbedPane editPane = new JTabbedPane();
-		
 		JTabbedPane playbackPane = new JTabbedPane();	
 
 
-		// Create the three buttons, download, editting and playback 
+		// Create the three buttons, download, editing and playback 
 		// Calls the methods that insert the GUI features into the main GUI
-
 		Download dl = new Download();
 		dl.insertGUIFeatures(frame,panel1,editPane,playbackPane,downloadPane);
 

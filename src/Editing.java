@@ -11,89 +11,89 @@ import javax.swing.JTabbedPane;
 
 
 public class Editing {
-	
+
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
 		panel.validate();
 	}
 	// Method to add the GUI components to the main GUI
 	public void addGUIComponents(final JFrame frame,final JTabbedPane pane2, final JTabbedPane pane3, final JTabbedPane pane){
-		
-		
-	JButton jbEdit = new JButton("Editing");
-	JPanel lightGreenPanel = new JPanel();
-	lightGreenPanel.setOpaque(true);
-	lightGreenPanel.setBackground(new Color(141,178,92));
-	lightGreenPanel.setPreferredSize(new Dimension(200, 40));
-	addButtonToPane(lightGreenPanel,jbEdit);
-	frame.getContentPane().add(lightGreenPanel, BorderLayout.CENTER);
-	pane.removeAll();
-	pane.setPreferredSize(new Dimension(200,200));
-	
-	
-	overlayAudio oa = new overlayAudio();
-	stripAudio sa = new stripAudio();
-	replaceAudio ra = new replaceAudio();
 
-	sa.insertRemoveAudio(pane);
-	oa.insertOverlayAudio(pane);
-	ra.insertReplaceAudio(pane);
-	
-	// Insert the tabs onto the JTabbedPane
-	editTitle et = new editTitle();
-	et.insertTitlePageTab(pane);
-	
-	editCredits ec = new editCredits();
-	ec.insertCreditPageTab(pane);
-	
+		//set up button and panel at the top of the gui for editing
+		JButton jbEdit = new JButton("Editing");
+		JPanel lightGreenPanel = new JPanel();
+		lightGreenPanel.setOpaque(true);
+		lightGreenPanel.setBackground(new Color(141,178,92));
+		lightGreenPanel.setPreferredSize(new Dimension(200, 40));
+		addButtonToPane(lightGreenPanel,jbEdit);
+		frame.getContentPane().add(lightGreenPanel, BorderLayout.CENTER);
+		pane.removeAll();
+		pane.setPreferredSize(new Dimension(200,200));
 
-	
+		//create instances of each editing class 
+		overlayAudio oa = new overlayAudio();
+		stripAudio sa = new stripAudio();
+		replaceAudio ra = new replaceAudio();
 
-	// Listener for the Editing Button.
-	jbEdit.addActionListener(new ActionListener(){
+		sa.insertRemoveAudio(pane);
+		oa.insertOverlayAudio(pane);
+		ra.insertReplaceAudio(pane);
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			// Detects and identifies if a JTabbedPane is open or not and opens and closes the Editing JTabbedPane 
-			// accordingly
-			if (pane2.isVisible()){
-				frame.getContentPane().remove(pane2);
-				pane2.setVisible(false);
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);
-				pane.setVisible(true);
+		// Insert the tabs onto the JTabbedPane
+		editTitle et = new editTitle();
+		et.insertTitlePageTab(pane);
+
+		editCredits ec = new editCredits();
+		ec.insertCreditPageTab(pane);
+
+
+
+
+		// Listener for the Editing Button.
+		jbEdit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				// Detects and identifies if a JTabbedPane is open or not and opens and closes the Editing JTabbedPane 
+				// accordingly
+				if (pane2.isVisible()){
+					frame.getContentPane().remove(pane2);
+					pane2.setVisible(false);
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);
+					pane.setVisible(true);
+				}
+				else if (pane3.isVisible()){
+					frame.getContentPane().remove(pane3);
+					pane3.setVisible(false);
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);
+					pane.setVisible(true);
+				}
+				else if (pane.isVisible()){
+					pane.setVisible(false);
+					frame.getContentPane().remove(pane);
+				}
+				else if (pane.isVisible() == false){
+					pane.setVisible(true);
+					frame.getContentPane().add(pane, BorderLayout.SOUTH);
+				}
+
+
+				frame.pack();
+				frame.repaint();
+				frame.validate();
+
 			}
-			else if (pane3.isVisible()){
-				frame.getContentPane().remove(pane3);
-				pane3.setVisible(false);
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);
-				pane.setVisible(true);
-			}
-			else if (pane.isVisible()){
-				pane.setVisible(false);
-				frame.getContentPane().remove(pane);
-			}
-			else if (pane.isVisible() == false){
-				pane.setVisible(true);
-				frame.getContentPane().add(pane, BorderLayout.SOUTH);
-			}
-			
-			
-			frame.pack();
-			frame.repaint();
-			frame.validate();
-		
-		}
 
 
-	});
+		});
 
-}
-	
-	  public void addTab(JTabbedPane tabbedPane, String label) {
-		    JButton button = new JButton(label);
-		    tabbedPane.addTab(label, button);
-		  }
-	  
+	}
+	//method to add a tab to the jtabbed pane
+	public void addTab(JTabbedPane tabbedPane, String label) {
+		JButton button = new JButton(label);
+		tabbedPane.addTab(label, button);
+	}
+
 
 }

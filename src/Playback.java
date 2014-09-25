@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,6 +21,7 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -176,42 +179,21 @@ public class Playback {
 		panel.add(text);
 		text.setPreferredSize(new Dimension(400,20));
 	}
-	//adds timer to the media frame
-	private void addTimer(){
-		//create timer 
-		timer = new JTextField();
-		timer.setEditable(false);
-		timer.setPreferredSize(new Dimension(130,20));
-		Timer time = new Timer(1000, new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				double time = (video.getTime()/1000.0);
-				double length = video.getLength()/1000.0;
-				timer.setText(time + "/" + length);
-			}
-
-		}
-				);
-		//start timer
-		time.start();
-
-		//add timer to the toolpanel
-		toolPanel.add(timer);
-
-	}
 
 	//adds file choice button and implementation
 	private void addFileChoice(){
 		//creates new button
 		jbChoose = new JButton("Choose File");
-		JFileChooser jfile = null;
 
 		//adds file choosing functionality to button
 		jbChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
 				JFileChooser jfile = new JFileChooser();
-
+				// remove the accept all filter
+				jfile.setAcceptAllFileFilterUsed(false);
+				// filters results so only video files can be added
+				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4","m4v"));
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
 					String chosenFile = jfile.getSelectedFile().toString();
@@ -281,22 +263,20 @@ public class Playback {
 		addMuteButton();
 		addVolumeControl();
 		addTimer();
-		
+
 		//add tool bar to the panel
 		panel.add(toolPanel,BorderLayout.SOUTH);	
 
 		//changed file for ease of testing, 
-		//TODO change back to chosen file for submission and type checking
-		//video.playMedia(chosenfile);
-		video.playMedia("bbb.mp4");
+		video.playMedia(chosenfile);
+		//video.playMedia("bbb.mp4");
 
-		
+
 	}
 
 	//add pause button
 	private void addPauseButton(){
 		jbPause = new JButton("||");
-
 		jbPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				isFastForwarding = false;
@@ -309,10 +289,10 @@ public class Playback {
 		jbPause.setVisible(true);
 		addButtonToPane(toolPanel,jbPause);
 	}
-	
-//add play button
+
+	//add play button
 	private void addPlayButton(){
-		jbBegin = new JButton(">");
+		jbBegin = new JButton("▶");
 
 		jbBegin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -330,7 +310,7 @@ public class Playback {
 
 	//add fast forward button
 	private void addFFButton(){
-		jbFast = new JButton(">>");
+		jbFast = new JButton("▶▶");
 
 		jbFast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -347,9 +327,9 @@ public class Playback {
 		addButtonToPane(toolPanel,jbFast);
 
 	}
-//add reverse button
+	//add reverse button
 	private void addBackButton(){
-		jbBack = new JButton("<<");
+		jbBack = new JButton("◀◀");
 
 		jbBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -365,7 +345,7 @@ public class Playback {
 
 	}
 
-//creates the swingworker to allow for continuous fast forwarding
+	//creates the swingworker to allow for continuous fast forwarding
 	private class FFSwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
@@ -381,9 +361,9 @@ public class Playback {
 			}
 			return null;
 		}
-		
+
 	}
-	
+
 	//creates the swingworker to allow for continuous rewinding
 	private class BKSwingWorker extends SwingWorker<Integer,String>{
 		protected void done(){
@@ -399,7 +379,7 @@ public class Playback {
 			return null;
 		}
 	}
-//add mute button
+	//add mute button
 	private void addMuteButton(){
 		jbMute = new JButton("Mute");
 
@@ -417,7 +397,7 @@ public class Playback {
 		});
 		toolPanel.add(jbMute);
 	}
-	
+
 	//add volume control slider
 	private void addVolumeControl(){
 
@@ -433,6 +413,41 @@ public class Playback {
 
 	}
 
+	//adds timer to the media frame
+	private void addTimer(){
+		//create timer 
+		timer = new JTextField();
+		timer.setEditable(false);
+		timer.setPreferredSize(new Dimension(130,20));
+		Timer time = new Timer(300, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String length = convertTime(video.getLength());
+				String now = convertTime(video.getTime());
+
+				timer.setText(now + "/" + length);
+			}
+
+		}
+				);
+		//start timer
+		time.start();
+
+		//add timer to the toolpanel
+		toolPanel.add(timer);
+
+	}
+
+
+	//this method puts the time in the correct format
+	private String convertTime(long time) {
+		int seconds = (int) (TimeUnit.MILLISECONDS.toSeconds(time) % 60);
+		int hours = (int) (TimeUnit.MILLISECONDS.toHours(time) % 24);
+		int minutes = (int) (TimeUnit.MILLISECONDS.toMinutes(time) % 60);
+
+		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+	}
 
 }
 
