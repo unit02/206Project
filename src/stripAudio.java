@@ -38,6 +38,7 @@ public class stripAudio {
 	private JFormattedTextField startTime;
 	private JFormattedTextField timeInterval;
 
+	
 	private File inputFile;
 	private int exitStatus;
 	SpringLayout layout = new SpringLayout();
@@ -80,14 +81,19 @@ public class stripAudio {
 				} else if(fileChoice.getText().equals("")){
 					userInfo.setText("Please choose an input file!");
 					return;
-				} else if(!trueCheck.isSelected()){
+				} 
+				else if(!trueCheck.isSelected()){
 					if(timeInterval.getText().equals("00:00:00")){
 						userInfo.setText("Please choose a a time interval!");
 						return;
+					} else{
+						removeSwingWorker sw = new removeSwingWorker();
+						sw.execute();
 					}
 				}
 
 				else {
+					
 					//else file does not exist and we can download
 					removeSwingWorker sw = new removeSwingWorker();
 					sw.execute();
@@ -195,7 +201,7 @@ public class stripAudio {
 		layout.putConstraint(SpringLayout.NORTH, timeInterval, 25, SpringLayout.NORTH, titleText);		
 
 
-		trueCheck = new JCheckBox("Entire File", false);
+		trueCheck = new JCheckBox("Entire File");
 		panel.add(trueCheck);
 		//set location of the user input field for the check box
 		layout.putConstraint(SpringLayout.WEST, trueCheck,10, SpringLayout.EAST, timeInterval);
@@ -272,14 +278,18 @@ public class stripAudio {
 			String outputName = titleName.getText() + ".mp3";
 			String beginTime = startTime.getText();
 			String length = timeInterval.getText();
-			ProcessBuilder builder;
+			ProcessBuilder builder ;
+			
 			//creates the process for avconv
 			if (trueCheck.isSelected()){
+				System.out.print("ok");
 				builder = new ProcessBuilder("avconv", "-i", file, "-acodec", "libmp3lame", outputName);	
-			}else {
-				builder = new ProcessBuilder("avconv","-i",file,"-ss",beginTime,"-t",length,"-ac","2","-vn","-y",outputName);
+			} else {
+				builder	= new ProcessBuilder("avconv","-i",file,"-ss",beginTime,"-t",length,"-ac","2","-vn","-y",outputName);
+				
 			}
-			
+
+
 			userInfo.setText("Stripping of audio is in progress...");
 			Process process = builder.start();
 			exitStatus = process.waitFor();
