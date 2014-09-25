@@ -104,8 +104,7 @@ public class replaceAudio {
 			
 
 			//creates the process for avconv
-			ProcessBuilder builder = new ProcessBuilder("avconv -i" + inputVideo + "-i" + inputAudio + "-map 0:v -map 1:a -vcodec copy -acodec copy" +  outputName);
-
+			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i \"" + inputVideo + "\" -i \"" + inputAudio + "\" -map 0:v -map 1:a " +"-c:v copy -c:a copy -y \"" + outputName + "\"");
 			userInfo.setText("Replacement of audio is in progress...");
 			Process process = builder.start();
 
@@ -134,7 +133,7 @@ public class replaceAudio {
 
 		//add the user input box for the title of the output file
 		titleName = new JTextField();
-		titleName.setPreferredSize(new Dimension(115,20));
+		titleName.setPreferredSize(new Dimension(270,20));
 		panel.add(titleName);
 		//move the mp3 output file name to its location on the screen
 		layout.putConstraint(SpringLayout.WEST, titleName, 7, SpringLayout.EAST, titleText);
@@ -147,12 +146,12 @@ public class replaceAudio {
 		titleName.setPreferredSize(new Dimension(115,20));
 		panel.add(mp4Display);
 		//move the choose file button to its location
-		layout.putConstraint(SpringLayout.WEST, mp4Display, 115, SpringLayout.WEST, titleName);
+		layout.putConstraint(SpringLayout.WEST, mp4Display, 2, SpringLayout.EAST, titleName);
 		layout.putConstraint(SpringLayout.NORTH, mp4Display, 30, SpringLayout.NORTH, jbChooseAud);
 
 		//add textbox for error messages to be conveyed to the user
 		userInfo = new JTextField();
-		userInfo.setPreferredSize(new Dimension(275,20));
+		userInfo.setPreferredSize(new Dimension(325,20));
 		userInfo.setEditable(false);
 
 		//move the text box containing user information 
@@ -214,9 +213,10 @@ public class replaceAudio {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
 				JFileChooser jfile = new JFileChooser();
-				// remove the accept all filter.
+				
+				// remove the accept all filter
 				jfile.setAcceptAllFileFilterUsed(false);
-				// Add mp4 as filter.
+				// filters results so only audio files can be added
 				jfile.setFileFilter(new FileNameExtensionFilter("mp3 & wav Images", "wav", "mp3"));
 			      
 				
