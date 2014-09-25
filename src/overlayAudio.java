@@ -16,9 +16,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class overlayAudio {
 
+
 	private JButton _jbChooseVid;
 	private JButton _jbChooseAud;
 	private JButton _jbReplace;
+
+
 	private JTextField _userInfo;
 	private JTextField _inputVideo;
 	private JTextField _titleName;
@@ -27,8 +30,12 @@ public class overlayAudio {
 	private JTextField _inputAudio;
 	SpringLayout _layout = new SpringLayout();
 	private File _inputVideoFile;
+
 	private File _inputAudioFile;
 	private int exitStatus;
+
+
+
 
 	//method to add tab to the tabbed pane 
 	public void insertOverlayAudio(final JTabbedPane pane){
@@ -45,15 +52,22 @@ public class overlayAudio {
 		addAudFileChooser(panel, "Choose Audio File");
 		addPanelFeatures(panel);
 
+
 		//creates replace button
 		_jbReplace = new JButton("Overlay Audio");
+
+
+
+		_jbReplace = new JButton("Overlay audio of file");
 		panel.add(_jbReplace);
 
 		//move the text box containing user file choice button to its location
 		_layout.putConstraint(SpringLayout.WEST, _jbReplace, 15, SpringLayout.WEST, panel);
 		_layout.putConstraint(SpringLayout.NORTH, _jbReplace, 25, SpringLayout.NORTH, _userInfo);
 
+
 		//creates the response generated when the user presses the replace button
+
 		_jbReplace.addActionListener(new ActionListener() {
 
 			@Override
@@ -90,21 +104,24 @@ public class overlayAudio {
 	private class overlaySwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
+
 			if (exitStatus == 0 ){
 				_userInfo.setText("Overlay of audio has been completed!");
 			} else if (exitStatus > 0){
 				_userInfo.setText("Error Encountered during overlay.");
 
+				_userInfo.setText("Overlay of audio has been completed!");	
 			}
+
+
 		}
 
 		@Override
-		protected Integer doInBackground() throws Exception {	
-			//gets the input for the process
+
+		protected Integer doInBackground() throws Exception {		
 			String _inputVideo = _inputVideoFile.getAbsolutePath();
 			String outputName = _titleName.getText() + ".mp4";
 			String _inputAudio = _inputAudioFile.getAbsolutePath();
-
 			//creates the process for avconv
 			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c","avconv -i \"" + _inputVideo + "\" -i \"" + _inputAudio + "\" -filter_complex amix=inputs=2:duration=first:dropout_transition=3 \"" + outputName + "\"");
 			_userInfo.setText("Overlay of audio is in progress...");
@@ -138,6 +155,9 @@ public class overlayAudio {
 		_layout.putConstraint(SpringLayout.NORTH, _titleName, 30, SpringLayout.NORTH, _jbChooseAud);
 
 		//creates text field to display the .mp4 to indicate to the use it will by added automatically
+
+
+
 		_mp4Display = new JTextField();
 		_mp4Display.setText(".mp4");
 		_mp4Display.setEditable(false);
@@ -162,6 +182,9 @@ public class overlayAudio {
 	private void addVidFileChooser(final JPanel panel,String text){
 		//create and add functionality for file choosing button
 		_jbChooseVid = new JButton(text);
+
+		JFileChooser jfile = null;
+
 		_jbChooseVid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
@@ -205,6 +228,9 @@ public class overlayAudio {
 	private void addAudFileChooser(final JPanel panel,String text){
 		//create and add functionality for file choosing button
 		_jbChooseAud = new JButton(text);
+
+		JFileChooser jfile = null;
+
 		_jbChooseAud.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed

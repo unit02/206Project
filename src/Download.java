@@ -24,19 +24,24 @@ import javax.swing.SwingWorker;
 
 public class Download extends JPanel{
 
-	boolean isCanceled = false;
-	boolean wgetFinished = false;
-	private	JButton jbCancel;
-	private	JCheckBox trueCheck ;
-	private	JTextField urlInput ;
-	private	JTextField jtextInput;
 
-	private	JTextField userInfo ;
-	private JProgressBar pb = new JProgressBar();
-	int prog = 0;
-	private JButton jbDownload;
 
-	private SpringLayout lay;
+
+	boolean _isCanceled = false;
+	boolean _wgetFinished = false;
+	private	JButton _jbCancel;
+	private	JCheckBox _trueCheck ;
+	private	JTextField _urlInput ;
+	private	JTextField _jtextInput;
+
+	private	JTextField _userInfo ;
+	private JProgressBar _pb = new JProgressBar();
+	int _prog = 0;
+
+	private JButton _jbDownload;
+
+	private SpringLayout _lay;
+
 
 	private void addButtonToPane(JPanel panel, JButton button){
 		panel.add(button);
@@ -47,35 +52,35 @@ public class Download extends JPanel{
 
 	private void addTextFields(final JPanel panel1){
 
-		jtextInput = new JTextField("Input URL :");
-		jtextInput.setEditable(false);
-		panel1.add(jtextInput);
+		_jtextInput = new JTextField("Input URL :");
+		_jtextInput.setEditable(false);
+		panel1.add(_jtextInput);
 
 		//set location of the text field labeling the user input
-		lay.putConstraint(SpringLayout.WEST, jtextInput, 15, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, jtextInput, 25, SpringLayout.NORTH, panel1);
+		_lay.putConstraint(SpringLayout.WEST, _jtextInput, 15, SpringLayout.WEST, panel1);
+		_lay.putConstraint(SpringLayout.NORTH, _jtextInput, 25, SpringLayout.NORTH, panel1);
 
 
-		urlInput = new JTextField("",15);
-		panel1.add(urlInput);
+		_urlInput = new JTextField("",15);
+		panel1.add(_urlInput);
 
 		//set location of the user input field for the url
-		lay.putConstraint(SpringLayout.WEST, urlInput, 7, SpringLayout.EAST, jtextInput);
-		lay.putConstraint(SpringLayout.NORTH, urlInput, 25, SpringLayout.NORTH, panel1);		
+		_lay.putConstraint(SpringLayout.WEST, _urlInput, 7, SpringLayout.EAST, _jtextInput);
+		_lay.putConstraint(SpringLayout.NORTH, _urlInput, 25, SpringLayout.NORTH, panel1);		
 
-		trueCheck = new JCheckBox("Open Source", false);
-		panel1.add(trueCheck);
+		_trueCheck = new JCheckBox("Open Source", false);
+		panel1.add(_trueCheck);
 
 		//set the location of the open source check box
-		lay.putConstraint(SpringLayout.WEST, trueCheck, 15, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, trueCheck, 25, SpringLayout.NORTH, jtextInput);
+		_lay.putConstraint(SpringLayout.WEST, _trueCheck, 15, SpringLayout.WEST, panel1);
+		_lay.putConstraint(SpringLayout.NORTH, _trueCheck, 25, SpringLayout.NORTH, _jtextInput);
 
-		userInfo = new JTextField("",50);
-		userInfo.setEditable(false);
-		panel1.add(userInfo);
+		_userInfo = new JTextField("",50);
+		_userInfo.setEditable(false);
+		panel1.add(_userInfo);
 		//set the location of the open source check box
-		lay.putConstraint(SpringLayout.WEST, userInfo, 15, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, userInfo, 25, SpringLayout.NORTH, trueCheck);
+		_lay.putConstraint(SpringLayout.WEST, _userInfo, 15, SpringLayout.WEST, panel1);
+		_lay.putConstraint(SpringLayout.NORTH, _userInfo, 25, SpringLayout.NORTH, _trueCheck);
 
 
 
@@ -84,28 +89,28 @@ public class Download extends JPanel{
 
 	private void addProgressBar(final JPanel panel1){
 		//add progress bar and hide it
-		panel1.add(pb);
-		pb.setVisible(false);
+		panel1.add(_pb);
+		_pb.setVisible(false);
 		//set the location of the progress bar
-		lay.putConstraint(SpringLayout.WEST, pb, 15, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, pb, 30, SpringLayout.NORTH, jbDownload);
+		_lay.putConstraint(SpringLayout.WEST, _pb, 15, SpringLayout.WEST, panel1);
+		_lay.putConstraint(SpringLayout.NORTH, _pb, 30, SpringLayout.NORTH, _jbDownload);
 
 	}
 
 	private void createDownloadButton(final JPanel panel1){
-		jbDownload = new JButton("Download");
-		jbDownload.addActionListener(new ActionListener() {
+		_jbDownload = new JButton("Download");
+		_jbDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if(!trueCheck.isSelected()){
-					userInfo.setText("Please only download open source!");
+				if(!_trueCheck.isSelected()){
+					_userInfo.setText("Please only download open source!");
 					return;
 				}
 				String outputName = null;
-				String input = urlInput.getText();
+				String input = _urlInput.getText();
 				System.out.print(input);
 				if(input.length() == 0){
-					userInfo.setText("Please enter a URL");
+					_userInfo.setText("Please enter a URL");
 					return;
 				}
 				if (input.length() == 0){
@@ -113,7 +118,7 @@ public class Download extends JPanel{
 				}
 				else {
 					//to get the filename from the url a process is used
-					ProcessBuilder builder = new ProcessBuilder("basename", urlInput.getText());
+					ProcessBuilder builder = new ProcessBuilder("basename", _urlInput.getText());
 					Process process = null;
 
 					try {
@@ -144,13 +149,13 @@ public class Download extends JPanel{
 					if(select == JOptionPane.YES_OPTION) {
 						audioFile.delete();
 						//set the size of the progress bar
-						pb.setPreferredSize(new Dimension(250,20));	
+						_pb.setPreferredSize(new Dimension(250,20));	
 						//make the progress bar appear on screen
-						pb.setVisible(true);
+						_pb.setVisible(true);
 						//make the cancel button appear
-						jbCancel.setVisible(true);
+						_jbCancel.setVisible(true);
 						//set isCancwlled to false
-						isCanceled = false;
+						_isCanceled = false;
 						//else file does not exist and we can download
 						DownloadSwingWorker sw = new DownloadSwingWorker();
 						sw.execute();
@@ -161,13 +166,13 @@ public class Download extends JPanel{
 
 				else {
 					//set the size of the progress bar
-					pb.setPreferredSize(new Dimension(250,20));	
+					_pb.setPreferredSize(new Dimension(250,20));	
 					//make the progress bar appear on screen
-					pb.setVisible(true);
+					_pb.setVisible(true);
 					//make the cancel button appear
-					jbCancel.setVisible(true);
+					_jbCancel.setVisible(true);
 					//set isCancwlled to false
-					isCanceled = false;
+					_isCanceled = false;
 					//else file does not exist and we can download
 					DownloadSwingWorker sw = new DownloadSwingWorker();
 					sw.execute();
@@ -175,31 +180,31 @@ public class Download extends JPanel{
 				} // end else
 			}
 		});
-		panel1.add(jbDownload);
+		panel1.add(_jbDownload);
 		//set the location of the download button
-		lay.putConstraint(SpringLayout.WEST, jbDownload, 15, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, jbDownload, 25, SpringLayout.NORTH, userInfo);
+		_lay.putConstraint(SpringLayout.WEST, _jbDownload, 15, SpringLayout.WEST, panel1);
+		_lay.putConstraint(SpringLayout.NORTH, _jbDownload, 25, SpringLayout.NORTH, _userInfo);
 
 	}
 
 	private void createCancelButton(final JPanel panel1){
-		jbCancel = new JButton("Cancel");
-		jbCancel.setVisible(false);
+		_jbCancel = new JButton("Cancel");
+		_jbCancel.setVisible(false);
 		//if cancel is pressed, then the download halts
-		jbCancel.addActionListener(new ActionListener(){
+		_jbCancel.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				isCanceled = true;
+				_isCanceled = true;
 
 			}
 
 
 		});
-		panel1.add(jbCancel);
+		panel1.add(_jbCancel);
 		//set the location of the download button
-		lay.putConstraint(SpringLayout.WEST, jbCancel, 25, SpringLayout.WEST, panel1);
-		lay.putConstraint(SpringLayout.NORTH, jbCancel, 25, SpringLayout.NORTH, userInfo);
+		_lay.putConstraint(SpringLayout.WEST, _jbCancel, 25, SpringLayout.WEST, panel1);
+		_lay.putConstraint(SpringLayout.NORTH, _jbCancel, 25, SpringLayout.NORTH, _userInfo);
 
 	}
 
@@ -218,8 +223,8 @@ public class Download extends JPanel{
 		panel1.removeAll();
 		pane.setPreferredSize(new Dimension(200,200));
 		pane.addTab("Download",panel1);
-		lay = new SpringLayout();
-		panel1.setLayout(lay);
+		_lay = new SpringLayout();
+		panel1.setLayout(_lay);
 
 		addTextFields(panel1);
 		createDownloadButton(panel1);
@@ -272,24 +277,24 @@ public class Download extends JPanel{
 		protected void done(){
 
 
-			if (isCanceled) {
-				jbDownload.setVisible(true);
-				userInfo.setText("Download was cancelled");
-				pb.setVisible(false);
-				pb.setBackground(null);
-				jbCancel.setVisible(false);
+			if (_isCanceled) {
+				_jbDownload.setVisible(true);
+				_userInfo.setText("Download was cancelled");
+				_pb.setVisible(false);
+				_pb.setBackground(null);
+				_jbCancel.setVisible(false);
 				return;
 			}
-			else if (wgetFinished){
-				jbDownload.setVisible(true);
-				userInfo.setText("Download has completed!");
-				pb.setVisible(false);
-				jbCancel.setVisible(false);
+			else if (_wgetFinished){
+				_jbDownload.setVisible(true);
+				_userInfo.setText("Download has completed!");
+				_pb.setVisible(false);
+				_jbCancel.setVisible(false);
 
 			}else{
-				jbDownload.setVisible(true);
-				pb.setVisible(false);
-				jbCancel.setVisible(false);
+				_jbDownload.setVisible(true);
+				_pb.setVisible(false);
+				_jbCancel.setVisible(false);
 			}
 
 
@@ -299,13 +304,13 @@ public class Download extends JPanel{
 
 		@Override
 		protected Integer doInBackground() throws Exception {
-			jbCancel.setVisible(true);
-			jbDownload.setVisible(false);
-			String URLname = urlInput.getText();
-			wgetFinished = false;
+			_jbCancel.setVisible(true);
+			_jbDownload.setVisible(false);
+			String URLname = _urlInput.getText();
+			_wgetFinished = false;
 			//String URLname = "http://ccmixter.org/content/_ghost/_ghost_-_Reverie_(small_theme).mp3";
-			userInfo.setText("Download in progress");
-			prog = 0;
+			_userInfo.setText("Download in progress");
+			_prog = 0;
 			String homePath = System.getProperty("user.home");
 			//creates the process for wget
 			ProcessBuilder builder = new ProcessBuilder("wget","-P",homePath, "--progress=dot",URLname);
@@ -319,7 +324,7 @@ public class Download extends JPanel{
 			//sends the dot progress bar to the process function for processing
 			while ((line = stdoutBuffered.readLine()) != null ) {	
 
-				if (isCanceled) {
+				if (_isCanceled) {
 					process.destroy();
 				}
 				publish(line);
@@ -327,24 +332,24 @@ public class Download extends JPanel{
 
 
 			if(process.waitFor() == 0) {
-				wgetFinished = true;
+				_wgetFinished = true;
 				return null;
 			}else if(process.waitFor() == 1) {								
-				userInfo.setText( "An error has been encounted");
+				_userInfo.setText( "An error has been encounted");
 			} else if(process.waitFor() == 2) {
-				userInfo.setText("Parse Error");
+				_userInfo.setText("Parse Error");
 			} else if(process.waitFor() == 3) {
-				userInfo.setText("File I/O Error");
+				_userInfo.setText("File I/O Error");
 			} else if(process.waitFor() == 4) {
-				userInfo.setText( "Network Failure");
+				_userInfo.setText( "Network Failure");
 			} else if(process.waitFor() == 5) {
-				userInfo.setText("SSL Verification Failure");
+				_userInfo.setText("SSL Verification Failure");
 			} else if(process.waitFor() == 6) {
-				userInfo.setText("Username/password authentication failure");
+				_userInfo.setText("Username/password authentication failure");
 			} else if(process.waitFor() == 7) {
-				userInfo.setText("Protocol Error");
+				_userInfo.setText("Protocol Error");
 			} else if(process.waitFor() == 8) {
-				userInfo.setText("Server Issued an error response");
+				_userInfo.setText("Server Issued an error response");
 			}
 			return null;
 
@@ -356,8 +361,8 @@ public class Download extends JPanel{
 		protected void process(List<String> chunks) {
 			//updates progress bar for each dot 
 			for(String chu:chunks){
-				prog++;
-				pb.setValue(prog);
+				_prog++;
+				_pb.setValue(_prog);
 			}
 
 
