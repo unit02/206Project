@@ -18,15 +18,17 @@ import javax.swing.SwingWorker;
 
 
 public class editAudio {
-	private JButton jbChoose;
-	private JButton jbRemove;
-	private JTextField userInfo;
-	private JTextField fileChoice;
-	private JTextField titleName;
-	private JTextField mp3Display;
-	private JTextField titleText;
-	SpringLayout layout = new SpringLayout();
-	private File inputFile;
+	private JButton _jbChoose;
+	private JButton _jbRemove;
+	private JTextField _userInfo;
+	private JTextField _fileChoice;
+	private JTextField _titleName;
+	private JTextField _mp3Display;
+	private JTextField _titleText;
+	SpringLayout _layout = new SpringLayout();
+	private File _inputFile;
+	
+	
 	//method to add tab to the tabbed pane 
 	public void insertRemoveAudio(final JTabbedPane pane){
 		//add tabs at the top of the tabbed pane
@@ -36,33 +38,33 @@ public class editAudio {
 	}
 
 	private void setRemovePanelFeatures(final JPanel panel){	
-		panel.setLayout(layout);
+		panel.setLayout(_layout);
 		addFileChooser(panel);
 		addPanelFeatures(panel);
-		
-		
-		
-		jbRemove = new JButton("Strip audio off file");
-		panel.add(jbRemove);
-		
-		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, jbRemove, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, jbRemove, 80, SpringLayout.NORTH, fileChoice);
 
-		jbRemove.addActionListener(new ActionListener() {
+
+
+		_jbRemove = new JButton("Strip audio off file");
+		panel.add(_jbRemove);
+
+		//move the text box containing user file choice button to its location
+		_layout.putConstraint(SpringLayout.WEST, _jbRemove, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _jbRemove, 80, SpringLayout.NORTH, _fileChoice);
+
+		_jbRemove.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				String outputName = titleName.getText() + ".mp3";
+				String outputName = _titleName.getText() + ".mp3";
 
 				File f = new File(outputName);
 				if(f.exists() && !f.isDirectory()) { 
-					userInfo.setText(outputName +" already exists!");
+					_userInfo.setText(outputName +" already exists!");
 					return;
-				} else if(fileChoice.getText().equals("")){
+				} else if(_fileChoice.getText().equals("")){
 					//System.out.print("hi");
-					userInfo.setText("Please choose an input file!");
+					_userInfo.setText("Please choose an input file!");
 					return;
 				}
 				else {
@@ -79,20 +81,20 @@ public class editAudio {
 	private class removeSwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
-			userInfo.setText("Stripping of audio has been completed!");	
+			_userInfo.setText("Stripping of audio has been completed!");	
 		}
 
 
 		@Override
 		protected Integer doInBackground() throws Exception {		
-			String file = inputFile.getAbsolutePath();
-			String outputName = titleName.getText() + ".mp3";
+			String file = _inputFile.getAbsolutePath();
+			String outputName = _titleName.getText() + ".mp3";
 
 			//creates the process for avconv
 
 			//ProcessBuilder builder = new ProcessBuilder("avconv", "-i", inputVideo, "-i" inputmusic, "-map", "0:0", "-map", "1:0", "-codec", "copy", "-shortest" outputfile);
 
-			userInfo.setText("Stripping of audio is in progress...");
+			_userInfo.setText("Stripping of audio is in progress...");
 			Process process = builder.start();
 
 			//redirects input and error streams
@@ -113,110 +115,110 @@ public class editAudio {
 
 	private void addPanelFeatures(final JPanel panel){
 		//add text box requesting user to input an output name
-		titleText = new JTextField();
-		titleText.setText("Output file name :");
-		titleText.setPreferredSize(new Dimension(115,20));
-		titleText.setEditable(false);
-		panel.add(titleText);
+		_titleText = new JTextField();
+		_titleText.setText("Output file name :");
+		_titleText.setPreferredSize(new Dimension(115,20));
+		_titleText.setEditable(false);
+		panel.add(_titleText);
 		//move the title text to its location on the screen
-		layout.putConstraint(SpringLayout.WEST, titleText, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, titleText, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _titleText, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _titleText, 55, SpringLayout.NORTH, panel);
 
 		//add the user input box for the title of the output file
-		titleName = new JTextField();
-		titleName.setPreferredSize(new Dimension(115,20));
-		panel.add(titleName);
+		_titleName = new JTextField();
+		_titleName.setPreferredSize(new Dimension(115,20));
+		panel.add(_titleName);
 		//move the mp3 output file name to its location on the screen
-		layout.putConstraint(SpringLayout.WEST, titleName, 125, SpringLayout.WEST, titleText);
-		layout.putConstraint(SpringLayout.NORTH, titleName, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _titleName, 125, SpringLayout.WEST, _titleText);
+		_layout.putConstraint(SpringLayout.NORTH, _titleName, 55, SpringLayout.NORTH, panel);
 
 
-		mp3Display = new JTextField();
-		mp3Display.setText(".mp3");
-		mp3Display.setEditable(false);
-		titleName.setPreferredSize(new Dimension(115,20));
-		panel.add(mp3Display);
+		_mp3Display = new JTextField();
+		_mp3Display.setText(".mp3");
+		_mp3Display.setEditable(false);
+		_titleName.setPreferredSize(new Dimension(115,20));
+		panel.add(_mp3Display);
 		//move the choose file button to its location
-		layout.putConstraint(SpringLayout.WEST, mp3Display, 115
-				, SpringLayout.WEST, titleName);
-		layout.putConstraint(SpringLayout.NORTH, mp3Display, 55, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _mp3Display, 115
+				, SpringLayout.WEST, _titleName);
+		_layout.putConstraint(SpringLayout.NORTH, _mp3Display, 55, SpringLayout.NORTH, panel);
 
 		//add textbox for error messages to be conveyed to the user
-				userInfo = new JTextField();
-				userInfo.setPreferredSize(new Dimension(275,20));
-				userInfo.setEditable(false);
-				//move the text box containing user file choice button to its location
-				layout.putConstraint(SpringLayout.WEST, userInfo, 15, SpringLayout.WEST, panel);
-				layout.putConstraint(SpringLayout.NORTH, userInfo, 55, SpringLayout.NORTH, jbChoose);
-				panel.add(userInfo);
+		_userInfo = new JTextField();
+		_userInfo.setPreferredSize(new Dimension(275,20));
+		_userInfo.setEditable(false);
+		//move the text box containing user file choice button to its location
+		_layout.putConstraint(SpringLayout.WEST, _userInfo, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _userInfo, 55, SpringLayout.NORTH, _jbChoose);
+		panel.add(_userInfo);
 
 	}
 	private void addFileChooser(final JPanel panel){
 		//create and add functionality for file choosing button
-		jbChoose = new JButton("Choose File");
+		_jbChoose = new JButton("Choose File");
 		JFileChooser jfile = null;
-		jbChoose.addActionListener(new ActionListener() {
+		_jbChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
 				JFileChooser jfile = new JFileChooser();
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					inputFile = jfile.getSelectedFile();
+					_inputFile = jfile.getSelectedFile();
 					String chosenFile = jfile.getSelectedFile().toString();
-					fileChoice.setText(chosenFile);
+					_fileChoice.setText(chosenFile);
 				}
 				jfile.setVisible(true);
 			}
 		});
-		panel.add(jbChoose);
+		panel.add(_jbChoose);
 
 
 		//move the choose file button to its location
-		layout.putConstraint(SpringLayout.WEST, jbChoose, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, jbChoose, 25, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _jbChoose, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _jbChoose, 25, SpringLayout.NORTH, panel);
 
 		//creates text field to store which file the user input
-		fileChoice = new JTextField();
-		fileChoice.setPreferredSize(new Dimension(150,20));
-		fileChoice.setEditable(false);
-		panel.add(fileChoice);
+		_fileChoice = new JTextField();
+		_fileChoice.setPreferredSize(new Dimension(150,20));
+		_fileChoice.setEditable(false);
+		panel.add(_fileChoice);
 
 		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, fileChoice, 125, SpringLayout.WEST, jbChoose);
-		layout.putConstraint(SpringLayout.NORTH, fileChoice, 27, SpringLayout.NORTH, panel);
+		_layout.putConstraint(SpringLayout.WEST, _fileChoice, 125, SpringLayout.WEST, _jbChoose);
+		_layout.putConstraint(SpringLayout.NORTH, _fileChoice, 27, SpringLayout.NORTH, panel);
 
-	
+
 
 	}
 	public void insertReplaceAudio(final JTabbedPane pane){
 		//add tabs at the top of the tabbed pane
 		JPanel replacePanel = new JPanel();
-		replacePanel.setLayout(layout);
+		replacePanel.setLayout(_layout);
 		pane.addTab( "Replace Audio", replacePanel);
 		addFileChooser(replacePanel);
 		addPanelFeatures(replacePanel);
-		
-		
+
+
 	}
-	
-	
+
+
 	private class ReplaceSwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
-			userInfo.setText("Replacement of audio has been completed!");	
+			_userInfo.setText("Replacement of audio has been completed!");	
 		}
 
 
 		@Override
 		protected Integer doInBackground() throws Exception {		
-			String file = inputFile.getAbsolutePath();
-			String outputName = titleName.getText() + ".mp3";
+			String file = _inputFile.getAbsolutePath();
+			String outputName = _titleName.getText() + ".mp3";
 
 			//creates the process for avconv
 
 			ProcessBuilder builder = new ProcessBuilder("avconv", "-i", file, "-acodec", "libmp3lame", outputName);
 
-			userInfo.setText("Replacement of audio is in progress...");
+			_userInfo.setText("Replacement of audio is in progress...");
 			Process process = builder.start();
 
 			//redirects input and error streams
@@ -238,7 +240,7 @@ public class editAudio {
 	public void insertOverlayAudio(final JTabbedPane pane){
 		//add tabs at the top of the tabbed pane
 		JPanel overlayPanel = new JPanel();
-		overlayPanel.setLayout(layout);
+		overlayPanel.setLayout(_layout);
 		pane.addTab( "Overlay Audio", overlayPanel);
 		addFileChooser(overlayPanel);
 		addPanelFeatures(overlayPanel);
