@@ -64,7 +64,7 @@ public class editCredits {
 		//move the text box containing user file choice button to its location
 		_layout.putConstraint(SpringLayout.NORTH, _jbPreview, 110, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST, _jbPreview, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.WEST, _jbCreditsPage, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.WEST, _jbCreditsPage, 160, SpringLayout.WEST, panel);
 		_layout.putConstraint(SpringLayout.NORTH, _jbCreditsPage, 110, SpringLayout.NORTH, _mp4Choice);
 		_layout.putConstraint(SpringLayout.NORTH,fonts,80,SpringLayout.NORTH,_mp4Choice);
 		_layout.putConstraint(SpringLayout.WEST,fonts,105,SpringLayout.WEST,panel);
