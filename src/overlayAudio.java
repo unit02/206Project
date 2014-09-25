@@ -13,7 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
-
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 
@@ -21,23 +21,24 @@ import javax.swing.SwingWorker;
 public class overlayAudio {
 	private JButton jbChooseVid;
 	private JButton jbChooseAud;
-	private JButton jbOverlay;
+	private JButton jbReplace;
 
 	private JTextField userInfo;
-	private JTextField inputVidFile;
+	private JTextField inputVideo;
 	private JTextField titleName;
 	private JTextField mp4Display;
 	private JTextField titleText;
-	private JTextField inputAudioFile;
+	private JTextField inputAudio;
 	SpringLayout layout = new SpringLayout();
-	private File inputFile;
+	private File inputVideoFile;
+	private File inputAudioFile;
 
 	//method to add tab to the tabbed pane 
 	public void insertOverlayAudio(final JTabbedPane pane){
 		//add tabs at the top of the tabbed pane
-		JPanel overlayPanel = new JPanel();
-		pane.addTab( "Overlay Audio", overlayPanel);
-		setOverlayPanelFeatures(overlayPanel);
+		JPanel removePanel = new JPanel();
+		pane.addTab( "Overlay Audio", removePanel);
+		setOverlayPanelFeatures(removePanel);
 	}
 
 	private void setOverlayPanelFeatures(final JPanel panel){	
@@ -48,14 +49,14 @@ public class overlayAudio {
 
 
 
-		jbOverlay = new JButton("Replace audio of file");
-		panel.add(jbOverlay);
+		jbReplace = new JButton("Replace audio of file");
+		panel.add(jbReplace);
 
 		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, jbOverlay, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, jbOverlay, 25, SpringLayout.NORTH, userInfo);
+		layout.putConstraint(SpringLayout.WEST, jbReplace, 15, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, jbReplace, 25, SpringLayout.NORTH, userInfo);
 
-		jbOverlay.addActionListener(new ActionListener() {
+		jbReplace.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -66,9 +67,14 @@ public class overlayAudio {
 				if(f.exists() && !f.isDirectory()) { 
 					userInfo.setText(outputName +" already exists!");
 					return;
-				} else if(inputVidFile.getText().equals("")){
-
-					userInfo.setText("Please choose an input file!");
+				} else if(inputVideo.getText().equals("")){
+					userInfo.setText("Please choose an video file!");
+					return;
+				}else if(inputAudio.getText().equals("")){
+					userInfo.setText("Please choose an audio file!");
+					return;
+				}else if(titleName.getText().equals("")){
+					userInfo.setText("Please choose a title!");
 					return;
 				}
 				else {
@@ -85,31 +91,29 @@ public class overlayAudio {
 	private class overlaySwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
-			userInfo.setText("Stripping of audio has been completed!");	
+			userInfo.setText("Overlay of audio has been completed!");	
 		}
 
 
 		@Override
 		protected Integer doInBackground() throws Exception {		
-			String videoInput = inputFile.getAbsolutePath();
-			String videoOutput = titleName.getText() + ".mp3";
+			String inputVideo = inputVideoFile.getAbsolutePath();
+			String outputName = titleName.getText() + ".mp4";
+			String inputAudio = inputAudioFile.getAbsolutePath();
+			
+			
 
 			//creates the process for avconv
-			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i \"" + videoInput + "\" -i \"" + audioInput + "\" -map 0:v -map 1:a " +"-c:v copy -c:a copy -y \"" + videoOutput + "\"");
-
-			userInfo.setText("Replacement of audio is in progress...");
+			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c","avconv -i \"" + inputVideo + "\" -i \"" + inputAudio + "\" -filter_complex amix=inputs=2:duration=first:dropout_transition=3 \"" + outputName + "\"");
+			userInfo.setText("Overlay of audio is in progress...");
 			Process process = builder.start();
 
 			//redirects input and error streams
 			InputStream stdout = process.getInputStream();
 			InputStream stderr = process.getErrorStream();
-			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
-			String line = null;
-
-			//sends the dot progress bar to the process function for processing
-			while ((line = stdoutBuffered.readLine()) != null ) {	
-				publish(line);
-			}
+		
+			process.waitFor();
+			
 			return null;
 		}
 
@@ -129,7 +133,7 @@ public class overlayAudio {
 
 		//add the user input box for the title of the output file
 		titleName = new JTextField();
-		titleName.setPreferredSize(new Dimension(115,20));
+		titleName.setPreferredSize(new Dimension(270,20));
 		panel.add(titleName);
 		//move the mp3 output file name to its location on the screen
 		layout.putConstraint(SpringLayout.WEST, titleName, 7, SpringLayout.EAST, titleText);
@@ -142,12 +146,12 @@ public class overlayAudio {
 		titleName.setPreferredSize(new Dimension(115,20));
 		panel.add(mp4Display);
 		//move the choose file button to its location
-		layout.putConstraint(SpringLayout.WEST, mp4Display, 115, SpringLayout.WEST, titleName);
+		layout.putConstraint(SpringLayout.WEST, mp4Display, 2, SpringLayout.EAST, titleName);
 		layout.putConstraint(SpringLayout.NORTH, mp4Display, 30, SpringLayout.NORTH, jbChooseAud);
 
 		//add textbox for error messages to be conveyed to the user
 		userInfo = new JTextField();
-		userInfo.setPreferredSize(new Dimension(275,20));
+		userInfo.setPreferredSize(new Dimension(325,20));
 		userInfo.setEditable(false);
 
 		//move the text box containing user information 
@@ -165,11 +169,17 @@ public class overlayAudio {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
 				JFileChooser jfile = new JFileChooser();
+				
+				// remove the accept all filter.
+				jfile.setAcceptAllFileFilterUsed(false);
+				// add mp4 as filter.
+				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4"));
+				
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					inputFile = jfile.getSelectedFile();
+					inputVideoFile = jfile.getSelectedFile();
 					String chosenFile = jfile.getSelectedFile().toString();
-					inputVidFile.setText(chosenFile);
+					inputVideo.setText(chosenFile);
 				}
 				jfile.setVisible(true);
 			}
@@ -182,14 +192,14 @@ public class overlayAudio {
 		layout.putConstraint(SpringLayout.NORTH, jbChooseVid, 15, SpringLayout.NORTH, panel);
 
 		//creates text field to store which file the user input
-		inputVidFile = new JTextField();
-		inputVidFile.setPreferredSize(new Dimension(150,20));
-		inputVidFile.setEditable(false);
-		panel.add(inputVidFile);
+		inputVideo = new JTextField();
+		inputVideo.setPreferredSize(new Dimension(150,20));
+		inputVideo.setEditable(false);
+		panel.add(inputVideo);
 
 		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, inputVidFile, 15, SpringLayout.EAST, jbChooseVid);
-		layout.putConstraint(SpringLayout.NORTH, inputVidFile, 3, SpringLayout.NORTH, jbChooseVid);
+		layout.putConstraint(SpringLayout.WEST, inputVideo, 15, SpringLayout.EAST, jbChooseVid);
+		layout.putConstraint(SpringLayout.NORTH, inputVideo, 3, SpringLayout.NORTH, jbChooseVid);
 
 
 
@@ -203,11 +213,18 @@ public class overlayAudio {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
 				JFileChooser jfile = new JFileChooser();
+				
+				// remove the accept all filter
+				jfile.setAcceptAllFileFilterUsed(false);
+				// filters results so only audio files can be added
+				jfile.setFileFilter(new FileNameExtensionFilter("mp3 & wav Images", "wav", "mp3"));
+			      
+				
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					inputFile = jfile.getSelectedFile();
+					inputAudioFile = jfile.getSelectedFile();
 					String chosenFile = jfile.getSelectedFile().toString();
-					inputAudioFile.setText(chosenFile);
+					inputAudio.setText(chosenFile);
 				}
 				jfile.setVisible(true);
 			}
@@ -220,17 +237,14 @@ public class overlayAudio {
 		layout.putConstraint(SpringLayout.NORTH, jbChooseAud, 30, SpringLayout.NORTH, jbChooseVid);
 
 		//creates text field to store which file the user input for the
-		inputAudioFile = new JTextField();
-		inputAudioFile.setPreferredSize(new Dimension(150,20));
-		inputAudioFile.setEditable(false);
-		panel.add(inputAudioFile);
+		inputAudio = new JTextField();
+		inputAudio.setPreferredSize(new Dimension(150,20));
+		inputAudio.setEditable(false);
+		panel.add(inputAudio);
 
 		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, inputAudioFile, 15, SpringLayout.EAST, jbChooseAud);
-		layout.putConstraint(SpringLayout.NORTH, inputAudioFile, 3, SpringLayout.NORTH, jbChooseAud);
+		layout.putConstraint(SpringLayout.WEST, inputAudio, 15, SpringLayout.EAST, jbChooseAud);
+		layout.putConstraint(SpringLayout.NORTH, inputAudio, 3, SpringLayout.NORTH, jbChooseAud);
 
 	}
-
 }
-
-
