@@ -40,9 +40,11 @@ public class Editing {
 	ra.insertReplaceAudio(pane);
 	
 	// Insert the tabs onto the JTabbedPane
-	editVideo ev = new editVideo();
-	ev.insertTitlePageTab(pane);
-	//ev.insertCreditPageTab(pane);
+	editTitle et = new editTitle();
+	et.insertTitlePageTab(pane);
+	
+	editCredits ec = new editCredits();
+	ec.insertCreditPageTab(pane);
 	
 
 	
