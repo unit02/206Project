@@ -1,7 +1,9 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -19,7 +21,7 @@ public class overlayAudio {
 
 	private JButton _jbChooseVid;
 	private JButton _jbChooseAud;
-	private JButton _jbReplace;
+	private JButton _jbOverlay;
 
 
 	private JTextField _userInfo;
@@ -54,21 +56,18 @@ public class overlayAudio {
 
 
 		//creates replace button
-		_jbReplace = new JButton("Overlay Audio");
+		_jbOverlay = new JButton("Overlay Audio");
 
-
-
-		_jbReplace = new JButton("Overlay audio of file");
-		panel.add(_jbReplace);
+		panel.add(_jbOverlay);
 
 		//move the text box containing user file choice button to its location
-		_layout.putConstraint(SpringLayout.WEST, _jbReplace, 15, SpringLayout.WEST, panel);
-		_layout.putConstraint(SpringLayout.NORTH, _jbReplace, 25, SpringLayout.NORTH, _userInfo);
+		_layout.putConstraint(SpringLayout.WEST, _jbOverlay, 15, SpringLayout.WEST, panel);
+		_layout.putConstraint(SpringLayout.NORTH, _jbOverlay, 25, SpringLayout.NORTH, _userInfo);
 
 
 		//creates the response generated when the user presses the replace button
 
-		_jbReplace.addActionListener(new ActionListener() {
+		_jbOverlay.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -123,7 +122,7 @@ public class overlayAudio {
 			String outputName = _titleName.getText() + ".mp4";
 			String _inputAudio = _inputAudioFile.getAbsolutePath();
 			//creates the process for avconv
-			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c","avconv -i \"" + _inputVideo + "\" -i \"" + _inputAudio + "\" -filter_complex amix=inputs=2:duration=first:dropout_transition=3 \"" + outputName + "\"");
+			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c","avconv -i \"" + _inputVideo + "\" -strict experimental -i \"" + _inputAudio + "\" -strict experimental -filter_complex amix=inputs=2:duration=first:dropout_transition=3 \"" + outputName + "\"");
 			_userInfo.setText("Overlay of audio is in progress...");
 			Process process = builder.start();
 			exitStatus = process.waitFor();
@@ -140,6 +139,7 @@ public class overlayAudio {
 		_titleText.setText("Output file name :");
 		_titleText.setPreferredSize(new Dimension(115,20));
 		_titleText.setEditable(false);
+		_titleText.setBorder(null);
 		panel.add(_titleText);
 
 		//move the title text to its location on the screen
@@ -148,20 +148,17 @@ public class overlayAudio {
 
 		//add the user input box for the title of the output file
 		_titleName = new JTextField();
-		_titleName.setPreferredSize(new Dimension(270,20));
+		_titleName.setPreferredSize(new Dimension(266,20));
 		panel.add(_titleName);
 		//move the mp3 output file name to its location on the screen
 		_layout.putConstraint(SpringLayout.WEST, _titleName, 7, SpringLayout.EAST, _titleText);
 		_layout.putConstraint(SpringLayout.NORTH, _titleName, 30, SpringLayout.NORTH, _jbChooseAud);
 
 		//creates text field to display the .mp4 to indicate to the use it will by added automatically
-
-
-
 		_mp4Display = new JTextField();
 		_mp4Display.setText(".mp4");
+		_mp4Display.setBorder(null);
 		_mp4Display.setEditable(false);
-		_titleName.setPreferredSize(new Dimension(115,20));
 		panel.add(_mp4Display);
 		//move the choose file button to its location
 		_layout.putConstraint(SpringLayout.WEST, _mp4Display, 2, SpringLayout.EAST, _titleName);
@@ -169,7 +166,8 @@ public class overlayAudio {
 
 		//add textbox for error messages to be conveyed to the user
 		_userInfo = new JTextField();
-		_userInfo.setPreferredSize(new Dimension(325,20));
+		_userInfo.setPreferredSize(new Dimension(422,20));
+		_userInfo.setBackground(new Color(245,245,245));
 		_userInfo.setEditable(false);
 
 		//move the text box containing user information 
@@ -182,8 +180,6 @@ public class overlayAudio {
 	private void addVidFileChooser(final JPanel panel,String text){
 		//create and add functionality for file choosing button
 		_jbChooseVid = new JButton(text);
-
-		JFileChooser jfile = null;
 
 		_jbChooseVid.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -213,8 +209,9 @@ public class overlayAudio {
 
 		//creates text field to store which file the user input
 		_inputVideo = new JTextField();
-		_inputVideo.setPreferredSize(new Dimension(150,20));
+		_inputVideo.setPreferredSize(new Dimension(248,20));
 		_inputVideo.setEditable(false);
+		_inputVideo.setBackground(new Color(245,245,245));
 		panel.add(_inputVideo);
 
 		//move the text box containing user file choice button to its location
@@ -229,7 +226,6 @@ public class overlayAudio {
 		//create and add functionality for file choosing button
 		_jbChooseAud = new JButton(text);
 
-		JFileChooser jfile = null;
 
 		_jbChooseAud.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -259,8 +255,9 @@ public class overlayAudio {
 
 		//creates text field to store which file the user input for the
 		_inputAudio = new JTextField();
-		_inputAudio.setPreferredSize(new Dimension(150,20));
+		_inputAudio.setPreferredSize(new Dimension(248,20));
 		_inputAudio.setEditable(false);
+		_inputAudio.setBackground(new Color(245,245,245));
 		panel.add(_inputAudio);
 
 		//move the text box containing user file choice button to its location

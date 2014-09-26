@@ -23,24 +23,24 @@ import javax.swing.text.MaskFormatter;
 
 public class stripAudio {
 
-	private JButton jbChoose;
-	private JButton jbRemove;
-	private JTextField userInfo;
-	private JTextField fileChoice;
-	private JTextField titleName;
-	private JTextField mp3Display;
-	private JTextField titleText;
-	private JTextField jtextStart;
-	private JTextField jtextEnd;
+	private JButton _jbChoose;
+	private JButton _jbRemove;
+	private JTextField _userInfo;
+	private JTextField _fileChoice;
+	private JTextField _titleName;
+	private JTextField _mp3Display;
+	private JTextField _titleText;
+	private JTextField _jtextStart;
+	private JTextField _jtextEnd;
 
-	private JCheckBox trueCheck;
+	private JCheckBox _trueCheck;
 
-	private JFormattedTextField startTime;
-	private JFormattedTextField timeInterval;
+	private JFormattedTextField _startTime;
+	private JFormattedTextField _timeInterval;
 
-	
-	private File inputFile;
-	private int exitStatus;
+
+	private File _inputFile;
+	private int _exitStatus;
 	SpringLayout layout = new SpringLayout();
 
 	//method to add tab to the tabbed pane 
@@ -59,32 +59,32 @@ public class stripAudio {
 
 
 		//creates the remove audio button
-		jbRemove = new JButton("Extract audio");
-		panel.add(jbRemove);
+		_jbRemove = new JButton("Extract audio");
+		panel.add(_jbRemove);
 
 		//move the button to its location
-		layout.putConstraint(SpringLayout.WEST, jbRemove, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, jbRemove, 25, SpringLayout.NORTH, userInfo);
+		layout.putConstraint(SpringLayout.WEST, _jbRemove, 15, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, _jbRemove, 25, SpringLayout.NORTH, _userInfo);
 
 		//add functionality to the button
-		jbRemove.addActionListener(new ActionListener() {
+		_jbRemove.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				String outputName = titleName.getText() + ".mp3";
+				String outputName = _titleName.getText() + ".mp3";
 
 				File f = new File(outputName);
 				if(f.exists() && !f.isDirectory()) { 
-					userInfo.setText(outputName +" already exists!");
+					_userInfo.setText(outputName +" already exists!");
 					return;
-				} else if(fileChoice.getText().equals("")){
-					userInfo.setText("Please choose an input file!");
+				} else if(_fileChoice.getText().equals("")){
+					_userInfo.setText("Please choose an input file!");
 					return;
 				} 
-				else if(!trueCheck.isSelected()){
-					if(timeInterval.getText().equals("00:00:00")){
-						userInfo.setText("Please choose a a time interval!");
+				else if(!_trueCheck.isSelected()){
+					if(_timeInterval.getText().equals("00:00:00")){
+						_userInfo.setText("Please choose a a time interval!");
 						return;
 					} else{
 						removeSwingWorker sw = new removeSwingWorker();
@@ -93,7 +93,7 @@ public class stripAudio {
 				}
 
 				else {
-					
+
 					//else file does not exist and we can download
 					removeSwingWorker sw = new removeSwingWorker();
 					sw.execute();
@@ -105,65 +105,68 @@ public class stripAudio {
 
 	private void addPanelFeatures(final JPanel panel){
 		//add text box requesting user to input an output name
-		titleText = new JTextField();
-		titleText.setText("Output file name :");
-		titleText.setFont(new Font("Verdana", Font.BOLD, 13));
-		titleText.setPreferredSize(new Dimension(145,20));
-		titleText.setEditable(false);
-		panel.add(titleText);
+		_titleText = new JTextField();
+		_titleText.setText("Output file name :");
+		_titleText.setBorder(null);
+		_titleText.setFont(new Font("Verdana", Font.BOLD, 13));
+		_titleText.setPreferredSize(new Dimension(145,20));
+		_titleText.setEditable(false);
+		panel.add(_titleText);
 		//move the title text to its location on the screen
-		layout.putConstraint(SpringLayout.WEST, titleText, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, titleText, 55, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.WEST, _titleText, 15, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, _titleText, 55, SpringLayout.NORTH, panel);
 
 		addTimeInputs(panel);
 
 		//add the user input box for the title of the output file
-		titleName = new JTextField();
-		titleName.setPreferredSize(new Dimension(180,20));
-		panel.add(titleName);
+		_titleName = new JTextField();
+		_titleName.setPreferredSize(new Dimension(238,20));
+		panel.add(_titleName);
 		//move the mp3 output file name to its location on the screen
-		layout.putConstraint(SpringLayout.WEST, titleName, 2, SpringLayout.EAST, titleText);
-		layout.putConstraint(SpringLayout.NORTH, titleName, 55, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.WEST, _titleName, 2, SpringLayout.EAST, _titleText);
+		layout.putConstraint(SpringLayout.NORTH, _titleName, 55, SpringLayout.NORTH, panel);
 
 
-		mp3Display = new JTextField();
-		mp3Display.setText(".mp3");
-		mp3Display.setEditable(false);
-		titleName.setPreferredSize(new Dimension(115,20));
-		panel.add(mp3Display);
+		_mp3Display = new JTextField();
+		_mp3Display.setText(".mp3");
+		_mp3Display.setEditable(false);
+		_mp3Display.setBorder(null);
+		panel.add(_mp3Display);
 		//move the choose file button to its location
-		layout.putConstraint(SpringLayout.WEST, mp3Display, 2, SpringLayout.EAST, titleName);
-		layout.putConstraint(SpringLayout.NORTH, mp3Display, 55, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.WEST, _mp3Display, 2, SpringLayout.EAST, _titleName);
+		layout.putConstraint(SpringLayout.NORTH, _mp3Display, 57, SpringLayout.NORTH, panel);
 
 		//add textbox for error messages to be conveyed to the user
-		userInfo = new JTextField();
-		userInfo.setPreferredSize(new Dimension(320,20));
-		userInfo.setEditable(false);
+		_userInfo = new JTextField();
+		_userInfo.setPreferredSize(new Dimension(422,20));
+		_userInfo.setBackground(new Color(245,245,245));
+		_userInfo.setEditable(false);
 		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, userInfo, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, userInfo, 25, SpringLayout.NORTH, jtextStart);
-		panel.add(userInfo);
+		layout.putConstraint(SpringLayout.WEST, _userInfo, 15, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, _userInfo, 25, SpringLayout.NORTH, _jtextStart);
+		panel.add(_userInfo);
 
 	}
 
 	private void addTimeInputs(final JPanel panel){
 
-		jtextStart = new JTextField("Start Time :");
-		jtextStart.setEditable(false);
-		jtextStart.setFont(new Font("Verdana", Font.BOLD, 13));
-		panel.add(jtextStart);
+		_jtextStart = new JTextField("Start Time :");
+		_jtextStart.setEditable(false);
+		_jtextStart.setFont(new Font("Verdana", Font.BOLD, 13));
+		_jtextStart.setBorder(null);
+		panel.add(_jtextStart);
 
 		//set location of the text field labeling start time
-		layout.putConstraint(SpringLayout.WEST, jtextStart, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, jtextStart, 25, SpringLayout.NORTH, titleText);
+		layout.putConstraint(SpringLayout.WEST, _jtextStart, 15, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, _jtextStart, 25, SpringLayout.NORTH, _titleText);
 
 		//creates place for the user to input start time
-		startTime = new JFormattedTextField(createFormatText());
-		startTime.setText("000000");
-		startTime.setPreferredSize(new Dimension(62,20));
-		panel.add(startTime);
+		_startTime = new JFormattedTextField(createFormatText());
+		_startTime.setText("000000");
+		_startTime.setPreferredSize(new Dimension(62,20));
+		panel.add(_startTime);
 
-		startTime.addFocusListener(new FocusAdapter() {
+		_startTime.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent fEvt) {
 				JTextField tField = (JTextField)fEvt.getSource();
 				tField.selectAll();
@@ -171,25 +174,25 @@ public class stripAudio {
 		});
 
 		//set location of the user input field for the start time
-		layout.putConstraint(SpringLayout.WEST, startTime, 7, SpringLayout.EAST, jtextStart);
-		layout.putConstraint(SpringLayout.NORTH, startTime, 25, SpringLayout.NORTH, titleText);		
+		layout.putConstraint(SpringLayout.WEST, _startTime, 7, SpringLayout.EAST, _jtextStart);
+		layout.putConstraint(SpringLayout.NORTH, _startTime, 25, SpringLayout.NORTH, _titleText);		
 
-		jtextEnd = new JTextField("End Time :");
-		jtextEnd.setEditable(false);
-		jtextEnd.setFont(new Font("Verdana", Font.BOLD, 13));
-		jtextEnd.setBorder(null);
-		panel.add(jtextEnd);
+		_jtextEnd = new JTextField("End Time :");
+		_jtextEnd.setEditable(false);
+		_jtextEnd.setFont(new Font("Verdana", Font.BOLD, 13));
+		_jtextEnd.setBorder(null);
+		panel.add(_jtextEnd);
 
 		//set location of the text field labeling end time
-		layout.putConstraint(SpringLayout.WEST, jtextEnd, 15, SpringLayout.EAST, startTime);
-		layout.putConstraint(SpringLayout.NORTH, jtextEnd, 25, SpringLayout.NORTH, titleText);
+		layout.putConstraint(SpringLayout.WEST, _jtextEnd, 15, SpringLayout.EAST, _startTime);
+		layout.putConstraint(SpringLayout.NORTH, _jtextEnd, 25, SpringLayout.NORTH, _titleText);
 
-		timeInterval = new JFormattedTextField(createFormatText());
-		timeInterval.setText("000000");		
-		timeInterval.setPreferredSize(new Dimension(62,20));
-		panel.add(timeInterval);
+		_timeInterval = new JFormattedTextField(createFormatText());
+		_timeInterval.setText("000000");		
+		_timeInterval.setPreferredSize(new Dimension(62,20));
+		panel.add(_timeInterval);
 
-		timeInterval.addFocusListener(new FocusAdapter() {
+		_timeInterval.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent fEvt) {
 				JTextField tField = (JTextField)fEvt.getSource();
 				tField.selectAll();
@@ -197,15 +200,15 @@ public class stripAudio {
 		});
 
 		//set location of the user input field for the end time
-		layout.putConstraint(SpringLayout.WEST, timeInterval,7, SpringLayout.EAST, jtextEnd);
-		layout.putConstraint(SpringLayout.NORTH, timeInterval, 25, SpringLayout.NORTH, titleText);		
+		layout.putConstraint(SpringLayout.WEST, _timeInterval,7, SpringLayout.EAST, _jtextEnd);
+		layout.putConstraint(SpringLayout.NORTH, _timeInterval, 25, SpringLayout.NORTH, _titleText);		
 
 
-		trueCheck = new JCheckBox("Entire File");
-		panel.add(trueCheck);
+		_trueCheck = new JCheckBox("Entire File");
+		panel.add(_trueCheck);
 		//set location of the user input field for the check box
-		layout.putConstraint(SpringLayout.WEST, trueCheck,10, SpringLayout.EAST, timeInterval);
-		layout.putConstraint(SpringLayout.NORTH, trueCheck, 23, SpringLayout.NORTH, titleText);		
+		layout.putConstraint(SpringLayout.WEST, _trueCheck,10, SpringLayout.EAST, _timeInterval);
+		layout.putConstraint(SpringLayout.NORTH, _trueCheck, 23, SpringLayout.NORTH, _titleText);		
 
 	}
 
@@ -223,8 +226,8 @@ public class stripAudio {
 
 	private void addFileChooser(final JPanel panel){
 		//create and add functionality for file choosing button
-		jbChoose = new JButton("Choose File");
-		jbChoose.addActionListener(new ActionListener() {
+		_jbChoose = new JButton("Choose File");
+		_jbChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Opens JFileChooser when button pressed
 				JFileChooser jfile = new JFileChooser();
@@ -234,28 +237,30 @@ public class stripAudio {
 				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4"));
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					inputFile = jfile.getSelectedFile();
+					_inputFile = jfile.getSelectedFile();
 					String chosenFile = jfile.getSelectedFile().toString();
-					fileChoice.setText(chosenFile);
+					_fileChoice.setText(chosenFile);
 				}
 				jfile.setVisible(true);
 			}
 		});
-		panel.add(jbChoose);
+		panel.add(_jbChoose);
 
 		//move the choose file button to its location
-		layout.putConstraint(SpringLayout.WEST, jbChoose, 15, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, jbChoose, 25, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.WEST, _jbChoose, 15, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, _jbChoose, 25, SpringLayout.NORTH, panel);
 
 		//creates text field to store which file the user input
-		fileChoice = new JTextField();
-		fileChoice.setPreferredSize(new Dimension(195,20));
-		fileChoice.setEditable(false);
-		panel.add(fileChoice);
+		_fileChoice = new JTextField();
+		_fileChoice.setBackground(new Color(245,245,245));
+		
+		_fileChoice.setPreferredSize(new Dimension(302,20));
+		_fileChoice.setEditable(false);
+		panel.add(_fileChoice);
 
 		//move the text box containing user file choice button to its location
-		layout.putConstraint(SpringLayout.WEST, fileChoice, 125, SpringLayout.WEST, jbChoose);
-		layout.putConstraint(SpringLayout.NORTH, fileChoice, 27, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.WEST, _fileChoice, 3, SpringLayout.EAST, _jbChoose);
+		layout.putConstraint(SpringLayout.NORTH, _fileChoice, 27, SpringLayout.NORTH, panel);
 	}
 
 	//swingworker to extract the audio in the background to gui remains responsive
@@ -264,35 +269,35 @@ public class stripAudio {
 		protected void done(){
 
 			//checks that the process was executed correctly
-			if(exitStatus == 0){
-				userInfo.setText("Stripping of audio has been completed!");
-			} else if(exitStatus > 0){
-				userInfo.setText("Stripping of audio has been failed.");	
+			if(_exitStatus == 0){
+				_userInfo.setText("Stripping of audio has been completed!");
+			} else if(_exitStatus > 0){
+				_userInfo.setText("Stripping of audio has failed.");	
 			}
 		}
 
-		//system hello
+	
 		@Override
 		protected Integer doInBackground() throws Exception {		
-			String file = inputFile.getAbsolutePath();
-			String outputName = titleName.getText() + ".mp3";
-			String beginTime = startTime.getText();
-			String length = timeInterval.getText();
+			String file = _inputFile.getAbsolutePath();
+			String outputName = _titleName.getText() + ".mp3";
+			String beginTime = _startTime.getText();
+			String length = _timeInterval.getText();
 			ProcessBuilder builder ;
-			
+
 			//creates the process for avconv
-			if (trueCheck.isSelected()){
-				System.out.print("ok");
+			if (_trueCheck.isSelected()){
+
 				builder = new ProcessBuilder("avconv", "-i", file, "-acodec", "libmp3lame", outputName);	
 			} else {
 				builder	= new ProcessBuilder("avconv","-i",file,"-ss",beginTime,"-t",length,"-ac","2","-vn","-y",outputName);
-				
+
 			}
 
 
-			userInfo.setText("Stripping of audio is in progress...");
+			_userInfo.setText("Stripping of audio is in progress...");
 			Process process = builder.start();
-			exitStatus = process.waitFor();
+			_exitStatus = process.waitFor();
 			return null;
 		}
 

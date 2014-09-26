@@ -90,15 +90,15 @@ public class Playback {
 
 		//move the text box to its location
 		layout.putConstraint(SpringLayout.WEST, text, 135, SpringLayout.WEST, pane);
-		layout.putConstraint(SpringLayout.NORTH, text, 17, SpringLayout.NORTH, pane);
+		layout.putConstraint(SpringLayout.NORTH, text, 2, SpringLayout.NORTH, jbChoose);
 
 		//move the file choice button to its location
 		layout.putConstraint(SpringLayout.WEST, jbChoose, 15, SpringLayout.WEST, pane);
-		layout.putConstraint(SpringLayout.NORTH, jbChoose, 15, SpringLayout.NORTH, pane);
+		layout.putConstraint(SpringLayout.NORTH, jbChoose, 45, SpringLayout.NORTH, pane);
 
 		//move the start button to its location
-		layout.putConstraint(SpringLayout.WEST, jbBegin, 35, SpringLayout.WEST, pane);
-		layout.putConstraint(SpringLayout.NORTH, jbBegin, 50, SpringLayout.NORTH, jbChoose);
+		layout.putConstraint(SpringLayout.WEST, jbBegin, 15, SpringLayout.WEST, pane);
+		layout.putConstraint(SpringLayout.NORTH, jbBegin, 15, SpringLayout.SOUTH, jbChoose);
 
 
 		//when the button is pressed, the panel below refreshes with the appropriate layout
@@ -232,12 +232,12 @@ public class Playback {
 		//add the panel to the jframe
 		mediaFrame.setContentPane(panel);
 		//set initial size of the video player to match that of the gui
-		mediaPlayerComponent.setSize(450, 550);
+		mediaPlayerComponent.setSize(450, 450);
 
 		//sets location for the video frame to appear right next to the gui
 		Point p = frame.getLocationOnScreen();
-		mediaFrame.setLocation(p.x + 780, p.y -25);
-		mediaFrame.setSize(700, 230);
+		mediaFrame.setLocation(p.x + 750, p.y -25);
+		mediaFrame.setSize(550, 260);
 		mediaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		mediaFrame.setVisible(true);
 
