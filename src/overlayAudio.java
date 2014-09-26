@@ -189,7 +189,7 @@ public class overlayAudio {
 				// remove the accept all filter.
 				jfile.setAcceptAllFileFilterUsed(false);
 				// add mp4 as filter.
-				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4"));
+				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4","avi"));
 
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {

@@ -193,7 +193,7 @@ public class Playback {
 				// remove the accept all filter
 				jfile.setAcceptAllFileFilterUsed(false);
 				// filters results so only video files can be added
-				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4","m4v"));
+				jfile.addChoosableFileFilter(new FileNameExtensionFilter("MPEG-4", "mp4","m4v","mp3 & wav Images", "wav", "mp3" ));
 				int response = jfile.showOpenDialog(null);
 				if (response == JFileChooser.APPROVE_OPTION) {
 					String chosenFile = jfile.getSelectedFile().toString();

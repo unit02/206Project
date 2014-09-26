@@ -267,7 +267,6 @@ public class stripAudio {
 	private class removeSwingWorker extends SwingWorker<Integer,String>{
 
 		protected void done(){
-
 			//checks that the process was executed correctly
 			if(_exitStatus == 0){
 				_userInfo.setText("Stripping of audio has been completed!");
